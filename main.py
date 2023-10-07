@@ -19,7 +19,8 @@ db_config = {
     "database": "art_gallery",
 }
 
-conn = mysql.connector.connect(**db_config)
+# conn = mysql.connector.connect(**db_config)
+conn = mysql.connector.connect(user='root',database='art_gallery',password='varunbwaj')
 
 cursor = conn.cursor()
 
