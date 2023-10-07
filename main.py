@@ -1,48 +1,58 @@
 import streamlit as st
-st.set_page_config(layout="wide")
-st.write("DBMS Mini-Project")
-# st.sidebar()
-import tab1 as tb1, tab2 as tb2
+import tab1 as tb1, tab2 as tb2, login as lg
 import time
-progressbar = st.progress(0)
-for i in range(100):
-    progressbar.progress(i+1)
-    time.sleep(0.01)
-
 import mysql.connector
 import pandas as pd
+from streamlit_option_menu import option_menu
 
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "ujjwalmk",
-    "database": "art_gallery",
-}
+check_login=True
+st.set_page_config(layout="wide")
 
-conn = mysql.connector.connect(**db_config)
-
-cursor = conn.cursor()
-
-
-
-st.sidebar.title("Tabs")
-selected_tab = st.sidebar.radio("Select a Tab", ["Tab 1", "Tab 2", "Tab 3"])
-
-if selected_tab == "Tab 1":
-    tb1.display(cursor=cursor)
-
-elif selected_tab == "Tab 2":
-
-    # st.write("You entered:", user_input)
-    # print(type(user_input))
-    # st.write(" ")
-    try:
-        tb2.inp_disp(cursor)
-    except mysql.connector.ProgrammingError as err:
-        st.error("Wrong query!")
-
+# while lg.login_user() and check_login:
+#     check_login=False
+if lg.login_user():
+    st.write("DBMS Mini-Project")
+    global last_selected_tab
+    last_selected_tab=0
     
+    progressbar = st.progress(0)
+    for i in range(100):
+        progressbar.progress(i+1)
+        time.sleep(0.01)
 
-elif selected_tab == "Tab 3":
-    st.title("Tab 3 Content")
-    st.write("This is the content for Tab 3.")
+    db_config = {
+        "host": "localhost",
+        "user": "root",
+        "password": "ujjwalmk",
+        "database": "art_gallery",
+    }
+    try:
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        # selected_tab=st.selectbox("Select a Tab", ["Tab 1", "Tab 2", "Tab 3"])
+        selected_tab = option_menu(
+            menu_title="Main Menu",
+            options=["Tab 1","Tab 2","Tab 3"],
+            icons=['1-circle-fill','2-circle-fill','3-circle-fill'],
+            menu_icon="cast",
+            orientation="horizontal",
+            default_index=last_selected_tab
+        )
+
+        if selected_tab == "Tab 1":
+            last_selected_tab=0
+            tb1.display(cursor=cursor)
+        elif selected_tab == "Tab 2":
+            last_selected_tab=1
+            # st.write("You entered:", user_input)
+            # print(type(user_input))
+            # st.write(" ")
+            try:
+                tb2.inp_disp(cursor)
+            except mysql.connector.ProgrammingError as err:
+                st.error("Wrong query!")
+        elif selected_tab=="Tab 3":
+            last_selected_tab=2
+            st.write("Work in progress")
+    except mysql.connector.InterfaceError as e:
+        st.error("Server is Down, visit back after sometime :)")

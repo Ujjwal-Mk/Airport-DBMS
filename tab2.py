@@ -5,7 +5,7 @@ def inp_disp(cursor):
     st.title("Tab 2 Content")
     st.write("This is the content for Tab 2.")
     user_input = st.text_area("Enter text here")
-    if st.button("Submit"):
+    if st.button("click"):
         cursor.execute(user_input)
     # del cols
     if cursor.description!=None:
