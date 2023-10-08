@@ -8,9 +8,11 @@ names = ["Peter Parker","Rebecca Miller"]
 usernames = ["pparker","rmiller"]
 passwords = ["abc123","def456"]
 
-file_path = Path(__file__).parent / "hashed_pw.pkl"
-with file_path.open("rb") as file:
-    hashed_passwords = pickle.load(file)
+hashed_passwords = stauth.Hasher(passwords).generate()
+
+# file_path = Path(__file__).parent / "hashed_pw.pkl"
+# with file_path.open("rb") as file:
+#     hashed_passwords = pickle.load(file)
 
 credentials = {"usernames":{}}
 
@@ -36,16 +38,3 @@ if authentications_status:
     st.title(f"Welcome {name}")
     st.write("login successfull!!")
     authenticator.logout("Logout","main")
-
-
-# usernames = ['user1','user2']
-# names = ['name1','name2']
-# passwords = ['pwd1','pwd2']
-
-# credentials = {"usernames":{}}
-        
-# for uname,name,pwd in zip(usernames,names,passwords):
-#     user_dict = {"name": name, "password": pwd}
-#     credentials["usernames"].update({uname: user_dict})
-        
-# authenticator = stauth.Authenticate(credentials, "cokkie_name", "random_key", cookie_expiry_days=30)
