@@ -1,40 +1,40 @@
-import pickle
-from pathlib import Path
 import streamlit as st
 import time
 import streamlit_authenticator as stauth
+def login_user():
+    names = ["Peter Parker","Rebecca Miller"]
+    usernames = ["pparker","rmiller"]
+    passwords = ["abc123","def456"]
 
-names = ["Peter Parker","Rebecca Miller"]
-usernames = ["pparker","rmiller"]
-passwords = ["abc123","def456"]
+    hashed_passwords = stauth.Hasher(passwords).generate()
 
-hashed_passwords = stauth.Hasher(passwords).generate()
+    # file_path = Path(__file__).parent / "hashed_pw.pkl"
+    # with file_path.open("rb") as file:
+    #     hashed_passwords = pickle.load(file)
 
-# file_path = Path(__file__).parent / "hashed_pw.pkl"
-# with file_path.open("rb") as file:
-#     hashed_passwords = pickle.load(file)
+    credentials = {"usernames":{}}
 
-credentials = {"usernames":{}}
+    for uname,name,pwd in zip(usernames,names,hashed_passwords):
+        user_dict = {"name":name,"password":pwd}
+        credentials["usernames"].update({uname:user_dict})
 
-for uname,name,pwd in zip(usernames,names,hashed_passwords):
-    user_dict = {"name":name,"password":pwd}
-    credentials["usernames"].update({uname:user_dict})
+    authenticator = stauth.Authenticate(credentials, "cookkkie","random_key",cookie_expiry_days=1)
 
-authenticator = stauth.Authenticate(credentials, "cookkkie","random_key",cookie_expiry_days=1)
+    name, authentications_status, username = authenticator.login("Login","main")
 
-name, authentications_status, username = authenticator.login("Login","main")
+    # print(authentications_status)
 
-# print(authentications_status)
+    if authentications_status is False:
+        error = st.error("Username/password is incorrect")
+        time.sleep(2)
+        error.empty()
+        return (0,authenticator)
 
-if authentications_status is False:
-    error = st.error("Username/password is incorrect")
-    time.sleep(2)
-    error.empty()
+    if authentications_status is None:
+        st.warning("Please enter Username and password")
 
-if authentications_status is None:
-    st.warning("Please enter Username and password")
-
-if authentications_status:
-    st.title(f"Welcome {name}")
-    st.write("login successfull!!")
-    authenticator.logout("Logout","main")
+    if authentications_status:
+        # st.title(f"Welcome {name}")
+        # st.write("login successfull!!")
+        authenticator.logout("Logout","main")
+        return (1,authenticator)
