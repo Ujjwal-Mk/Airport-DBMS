@@ -12,8 +12,6 @@ st.set_page_config(layout="wide")
 #     check_login=False
 if lg.login_user():
     st.write("DBMS Mini-Project")
-    global last_selected_tab
-    last_selected_tab=0
     
     progressbar = st.progress(0)
     for i in range(100):
@@ -36,7 +34,7 @@ if lg.login_user():
             icons=['1-circle-fill','2-circle-fill','3-circle-fill'],
             menu_icon="cast",
             orientation="horizontal",
-            default_index=last_selected_tab
+            default_index=0
         )
 
         if selected_tab == "Tab 1":

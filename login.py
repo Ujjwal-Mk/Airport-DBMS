@@ -12,6 +12,7 @@ def login_user():
             st.sidebar.success("Login Successful")
             st.session_state.authenticated = True
         else:
+            st.session_state.authenticated = False
             st.sidebar.error("Invalid credentials. Please try again.")
 
     if is_user_authenticated():
