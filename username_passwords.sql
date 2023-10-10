@@ -1,4 +1,4 @@
-SHOW DATABASES;
+DROP DATABASE IF EXISTS airport_staff_management;
 
 CREATE DATABASE airport_staff_management;
 
@@ -38,43 +38,5 @@ INSERT INTO usr_info1(f_name, l_name, minit, username, hashed_pass, auth_level) 
 ('James', 'Anderson', 'I', 'james123', 'pass789', '0'),
 ('Sophia', 'Martinez', 'J', 'sophiam', 'sophia123', '2');
 
-
--- SELECT username, `password`, CONCAT(f_name, " ", l_name) from usr_info;
-SELECT username, `password`, CONCAT(f_name, " ", l_name) as names FROM airport_staff_management.usr_info;
-
-CREATE TABLE test(
-    hashed_pass VARCHAR(100) PRIMARY KEY
-);
-
-
--- DELIMITER $$
--- CREATE FUNCTION InsertPassword(
---     new_string VARCHAR(255) -- Change the data type and length as needed
--- )
--- RETURNS INT
--- READS SQL DATA
--- DETERMINISTIC
--- BEGIN
---     DECLARE new_id INT;
-    
---     -- Insert the new string into the table
---     INSERT INTO  test(hashed_pass) VALUES (new_string);
-
---     -- Get the last inserted ID (assuming the table has an auto-increment primary key)
---     SET new_id = LAST_INSERT_ID();
-
---     RETURN new_id;
--- END $$
--- DELIMITER ;
-
-
--- SHOW FUNCTION STATUS where db='airport_staff_management';
-
--- SELECT InsertPassword('pass123');
-
-SELECT * FROM usr_info;
-
-
--- DROP FUNCTION InsertPassword;
-
-DROP TABLE usr_info;
+-- DROP TABLE usr_info;
+-- DROP TABLE usr_info1;

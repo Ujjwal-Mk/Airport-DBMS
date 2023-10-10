@@ -34,7 +34,9 @@ def get_usr_info():
             usernames.append(username)
             passwords.append(password)
             names.append(name)
-        print(usernames,'\n',passwords,'\n',names)
+
+        # print(names)
+
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
@@ -44,23 +46,28 @@ def get_usr_info():
             connection.close()
 
     return (names,usernames,passwords)
-    # Now, you have the usernames and passwords in the lists
-    # print("Names:", names)
-    # print("Usernames:", usernames)
-    # print("Passwords:", passwords)
+
 
 def add_usr(uname,Pass,f_name,minit,l_name,auth_lvl):
     try:    
         connection = mysql.connector.connect(**db_config)
 
         cursor = connection.cursor()
+        dummy_list = []
+        dummy_list.append(Pass)
+        hash_pass = stauth.Hasher(dummy_list).generate()[0]
 
-        hash_pass = stauth.Hasher(Pass).generate()[0]
-
-        operate_str = "INSERT INTO usr_info(f_name,minit,l_name,username,hashed_pass,auth_level) VALUES(%s,%s,%s,%s,%s,%s)"
+        operate_str = 'INSERT INTO usr_info (f_name,minit,l_name,username,hashed_pass,auth_level) VALUES (%s,%s,%s,%s,%s,%s)'
         data = (f_name,minit,l_name,uname,hash_pass,auth_lvl)
 
         cursor.execute(operate_str,data)
+
+        operate_str1 = 'INSERT INTO usr_info1 (f_name,minit,l_name,username,hashed_pass,auth_level) VALUES (%s,%s,%s,%s,%s,%s)'
+        data = (f_name,minit,l_name,uname,Pass,auth_lvl)
+        cursor.execute(operate_str1,data)
+        print("\nnew user added\n")
+
+
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:

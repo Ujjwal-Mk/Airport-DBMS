@@ -1,5 +1,5 @@
 import streamlit as st
-import tab1 as tb1, tab2 as tb2, login as lg, user_auth as ua
+import tab1 as tb1, tab2 as tb2, login as lg, user_auth as ua, tab3 as tb3
 import time
 import mysql.connector
 import pandas as pd
@@ -8,12 +8,10 @@ from streamlit_option_menu import option_menu
 check_login=True
 st.set_page_config(layout="wide")
 
-# while lg.login_user() and check_login:
-#     check_login=False
 
-def homepage():
+def homepage(boolean,auth):
     if boolean:
-        st.write("DBMS Mini-Project")
+        st.title("DBMS Mini-Project")
         progressbar = st.progress(0)
         for i in range(100):
             progressbar.progress(i+1)
@@ -43,23 +41,22 @@ def homepage():
                 tb1.display(cursor=cursor)
             elif selected_tab == "Tab 2":
                 last_selected_tab=1
-                # st.write("You entered:", user_input)
-                # print(type(user_input))
-                # st.write(" ")
                 try:
                     tb2.inp_disp(cursor)
                 except mysql.connector.ProgrammingError as err:
                     st.error("Wrong query!")
             elif selected_tab=="Tab 3":
                 last_selected_tab=2
-                st.write("Work in progress")
+                st.write("Testing Area")
+                tb3.disp()
+
         except mysql.connector.InterfaceError as e:
             st.error("Server is Down, visit back after sometime :)")
         auth.logout("Logout","main")
-            # Comment bro
+
 
 try:
     boolean, auth=ua.login_user()
-    homepage()
+    homepage(boolean,auth)
 except:
     pass
