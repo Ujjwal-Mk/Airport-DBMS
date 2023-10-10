@@ -4,12 +4,11 @@ import streamlit_authenticator as stauth
 import get_keys as gk
 
 def login_user():
-    try:
-        # Attempt to retrieve user information, handle any errors
-        names, usernames, hashed_passwords = gk.get_usr_info()
-    except Exception as e:
-        st.error("Server down")
-        return (0, None)
+    names = ["User 1","User 2"]
+    usernames = ["admin","test"]
+    passwords = ["admin123","test123"]
+
+    hashed_passwords = stauth.Hasher(passwords).generate()
 
     credentials = {"usernames": {}}
 
@@ -19,7 +18,7 @@ def login_user():
 
     authenticator = stauth.Authenticate(credentials, "cookkkie", "random_key", cookie_expiry_days=1)
 
-    name, authentications_status, username = authenticator.login("Login", "main")
+    name, authentications_status, username = authenticator.login("Login","main")
 
     if authentications_status is False:
         error = st.error("Username/password is incorrect")
@@ -33,17 +32,5 @@ def login_user():
         warn.empty()
 
     if authentications_status:
-        # authenticator.logout("Logout", "main")
-        return (1, username,authenticator)
-    
-def get_options(username):
-    auth_lvl = gk.get_level(username)
-    acc_auth_options=["Tab 1","Tab 2","Tab 3","Tab 4","Tab 5","Tab 6","Tab 7"]
-    acc_auth_icons=['1-circle-fill','2-circle-fill','3-circle-fill','4-circle-fill','5-circle-fill','6-circle-fill','7-circle-fill']
-    if auth_lvl == "2":
-        auth_icons = acc_auth_icons[:5]
-        auth_options = acc_auth_options[:5]
-    else:
-        auth_icons = acc_auth_icons
-        auth_options = acc_auth_options
-    return (auth_icons,auth_options)
+        authenticator.logout("Logout","main")
+        return (1,authenticator)

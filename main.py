@@ -5,23 +5,26 @@ import mysql.connector
 import pandas as pd
 from streamlit_option_menu import option_menu
 
-def ret_db_config():
-    db_config = {
-        "host": "localhost",
-        "user": "root",
-        # "password": "ujjwalmk",
-        "password": "varunbwaj",
-        "database": "airport_staff_management"}
-    return db_config
+check_login=True
+st.set_page_config(layout="wide")
 
-def homepage(boolean,username,authenticator):
+# while lg.login_user() and check_login:
+#     check_login=False
+st.title("Airport Staff Management")
+def homepage():
     if boolean:
         st.title("Airport Staff Management")
         progressbar = st.progress(0)
         for i in range(100):
             progressbar.progress(i+1)
             time.sleep(0.01)
-
+        db_config = {
+            "host": "localhost",
+            "user": "root",
+            "password": "ujjwalmk",
+            # "password": "varunbwaj",
+            "database": "art_gallery",
+        }
         try:
             conn = mysql.connector.connect(**ret_db_config())
             cursor = conn.cursor()    
@@ -46,38 +49,15 @@ def homepage(boolean,username,authenticator):
                     st.error("Wrong query!")
             elif selected_tab=="Tab 3":
                 last_selected_tab=2
-                st.write("Testing Area")
-                tb3.disp()
-            elif selected_tab=="Tab 4":
-                last_selected_tab=3
-                tb4.disp()
-                # st.write("Tab 4, updates loading")
-            elif selected_tab=="Tab 5":
-                last_selected_tab=4
-                st.write("Tab 5, updates loading")
-            elif selected_tab=="Tab 6":
-                last_selected_tab=5
-                st.write("Tab 6, updates loading")
-            elif selected_tab=="Tab 7":
-                last_selected_tab=6
-                st.write("Tab 7, updates loading")
-                
-            authenticator.logout("Logout","main")
-
+                st.write("Work in progress")
+            
+            auth.logout("Logout","main")
         except mysql.connector.InterfaceError as e:
             st.error("Server is Down, visit back after sometime :)")
-        finally:
-            if conn:
-            # Close the cursor and the database connection
-                conn.commit()
-                cursor.close()
-                conn.close()
+            # Comment bro
 
-
-if __name__=="__main__":
-    st.set_page_config(layout="wide")
-    try:        
-        boolean, username,authenticator=ua.login_user()
-        homepage(boolean,username,authenticator)
-    except:
-        pass
+try:
+    boolean, auth=ua.login_user()
+    homepage()
+except:
+    pass
