@@ -25,7 +25,7 @@ def login_user():
         error = st.error("Username/password is incorrect")
         time.sleep(2)
         error.empty()
-        return (0, authenticator)
+        return (0, username)
 
     if authentications_status is None:
         warn = st.warning("Please enter Username and password")
@@ -34,4 +34,16 @@ def login_user():
 
     if authentications_status:
         authenticator.logout("Logout", "main")
-        return (1, authenticator)
+        return (1, username)
+    
+def get_options(username):
+    auth_lvl = gk.get_level(username)
+    acc_auth_options=["Tab 1","Tab 2","Tab 3","Tab 4","Tab 5","Tab 6","Tab 7"]
+    acc_auth_icons=['1-circle-fill','2-circle-fill','3-circle-fill','4-circle-fill','5-circle-fill','6-circle-fill','7-circle-fill']
+    if auth_lvl == "2":
+        auth_icons = acc_auth_icons[:5]
+        auth_options = acc_auth_options[:5]
+    else:
+        auth_icons = acc_auth_icons
+        auth_options = acc_auth_options
+    return (auth_icons,auth_options)

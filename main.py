@@ -9,7 +9,7 @@ check_login=True
 st.set_page_config(layout="wide")
 
 
-def homepage(boolean,auth):
+def homepage(boolean,username):
     if boolean:
         st.title("Airport Staff Management")
         progressbar = st.progress(0)
@@ -25,12 +25,12 @@ def homepage(boolean,auth):
         }
         try:
             conn = mysql.connector.connect(**db_config)
-            cursor = conn.cursor()
-            # selected_tab=st.selectbox("Select a Tab", ["Tab 1", "Tab 2", "Tab 3"])
+            cursor = conn.cursor()    
+            auth_icons, auth_options = ua.get_options(username)
             selected_tab = option_menu(
                 menu_title="Main Menu",
-                options=["Tab 1","Tab 2","Tab 3"],
-                icons=['1-circle-fill','2-circle-fill','3-circle-fill'],
+                options=auth_options,
+                icons=auth_icons,
                 menu_icon="cast",
                 orientation="horizontal",
                 default_index=0
@@ -49,14 +49,31 @@ def homepage(boolean,auth):
                 last_selected_tab=2
                 st.write("Testing Area")
                 tb3.disp()
+            elif selected_tab=="Tab 4":
+                last_selected_tab=3
+                st.write("Tab 4, updates loading")
+            elif selected_tab=="Tab 5":
+                last_selected_tab=4
+                st.write("Tab 5, updates loading")
+            elif selected_tab=="Tab 6":
+                last_selected_tab=5
+                st.write("Tab 6, updates loading")
+            elif selected_tab=="Tab 7":
+                last_selected_tab=6
+                st.write("Tab 7, updates loading")
+            auth.logout("Logout","main")
 
         except mysql.connector.InterfaceError as e:
             st.error("Server is Down, visit back after sometime :)")
-        auth.logout("Logout","main")
-
+        finally:
+            if conn:
+            # Close the cursor and the database connection
+                conn.commit()
+                cursor.close()
+                conn.close()
 
 try:
-    boolean, auth=ua.login_user()
-    homepage(boolean,auth)
+    boolean, username=ua.login_user()
+    homepage(boolean,username)
 except:
     pass

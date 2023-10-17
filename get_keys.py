@@ -123,3 +123,28 @@ def add_usr(uname,Pass,f_name,minit,l_name,auth_lvl):
             connection.commit()
             cursor.close()
             connection.close()
+def get_level(username):
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+        auth_levels = []
+        operate_str1 = (f"SELECT auth_level FROM usr_info WHERE username='{username}'")
+        # print(operate_str1)
+        cursor.execute(operate_str1)
+        user_data = cursor.fetchall()
+
+        for level in user_data:
+            auth_levels.append(level)
+        # print(auth_levels)
+        # print(type(auth_levels[0]))
+        # print(type(auth_levels[0][0]))
+        return auth_levels[0][0]
+    
+    except mysql.connector.Error as err:
+        print(f"Error{err}")
+    finally:
+        if connection:
+            # connection.commit()
+            cursor.close()
+            connection.close()
+# print(get_level('admin'))
