@@ -11,7 +11,7 @@ st.set_page_config(layout="wide")
 
 def homepage(boolean,auth):
     if boolean:
-        st.title("DBMS Mini-Project")
+        st.title("Airport Staff Management")
         progressbar = st.progress(0)
         for i in range(100):
             progressbar.progress(i+1)
