@@ -9,7 +9,7 @@ check_login=True
 st.set_page_config(layout="wide")
 
 
-def homepage(boolean,username):
+def homepage(boolean,username,authenticator):
     if boolean:
         st.title("Airport Staff Management")
         progressbar = st.progress(0)
@@ -61,7 +61,8 @@ def homepage(boolean,username):
             elif selected_tab=="Tab 7":
                 last_selected_tab=6
                 st.write("Tab 7, updates loading")
-            auth.logout("Logout","main")
+                
+            authenticator.logout("Logout","main")
 
         except mysql.connector.InterfaceError as e:
             st.error("Server is Down, visit back after sometime :)")
@@ -73,7 +74,7 @@ def homepage(boolean,username):
                 conn.close()
 
 try:
-    boolean, username=ua.login_user()
-    homepage(boolean,username)
+    boolean, username,authenticator=ua.login_user()
+    homepage(boolean,username,authenticator)
 except:
     pass

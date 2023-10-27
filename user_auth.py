@@ -25,7 +25,7 @@ def login_user():
         error = st.error("Username/password is incorrect")
         time.sleep(2)
         error.empty()
-        return (0, username)
+        return (0, username,authenticator)
 
     if authentications_status is None:
         warn = st.warning("Please enter Username and password")
@@ -33,8 +33,8 @@ def login_user():
         warn.empty()
 
     if authentications_status:
-        authenticator.logout("Logout", "main")
-        return (1, username)
+        # authenticator.logout("Logout", "main")
+        return (1, username,authenticator)
     
 def get_options(username):
     auth_lvl = gk.get_level(username)
