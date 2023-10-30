@@ -1,51 +1,9 @@
 import mysql.connector
 import streamlit_authenticator as stauth
-
+import main as mp
 # Database connection parameters
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "varunbwaj",
-    "database": "airport_staff_management",
-}
-# def get_usr_info():
-#     try:
-#         # Establish a connection to the MySQL database
-#         connection = mysql.connector.connect(**db_config)
+db_config = mp.ret_db_config()
 
-#         # Create a cursor object to interact with the database
-#         cursor = connection.cursor()
-
-#         # Initialize empty lists for usernames and passwords
-#         usernames = []
-#         passwords = []
-#         names = []
-
-#         # Execute a query to fetch usernames and passwords
-#         cursor.execute('SELECT username, hashed_pass as password, CONCAT(f_name, " ", l_name) as names FROM airport_staff_management.usr_info;')
-
-#         # Fetch all the rows as a list of tuples
-#         user_data = cursor.fetchall()
-
-#         # print(user_data,type(user_data),'\n')
-
-#         # Extract usernames and passwords from the fetched data
-#         for username, password, name in user_data:
-#             usernames.append(username)
-#             passwords.append(password)
-#             names.append(name)
-
-    #     # print(names)
-
-    # except mysql.connector.Error as err:
-    #     print(f"Error: {err}")
-    # finally:
-    #     if connection:
-    #         # Close the cursor and the database connection
-    #         cursor.close()
-    #         connection.close()
-
-    # return (names,usernames,passwords)
 
 import mysql.connector
 

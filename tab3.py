@@ -16,9 +16,9 @@ def disp():
             st.selectbox("Authorization Level",['0','1','2'],index=2,key='auth_lvl')
             st.form_submit_button("Submit",on_click=submitted)
     if 'submitted' in st.session_state:
-        print("First Phase")
+        # print("First Phase")
         if st.session_state.submitted == True:
-            print("Second Phase")
+            # print("Second Phase")
             # data_dict = {'Username':st.session_state.uname,
             #              'Password':st.session_state.Pass,
             #              'First Name':st.session_state.f_name,
