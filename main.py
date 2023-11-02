@@ -54,10 +54,21 @@ def homepage():
             auth.logout("Logout","main")
         except mysql.connector.InterfaceError as e:
             st.error("Server is Down, visit back after sometime :)")
-            # Comment bro
+        finally:
+            if conn:
+            # Close the cursor and the database connection
+                conn.commit()
+                cursor.close()
+                conn.close()
 
-try:
-    boolean, auth=ua.login_user()
-    homepage()
-except:
-    pass
+
+if __name__=="__main__":
+    st.set_page_config(layout="wide")
+    try:        
+        boolean, username,authenticator=ua.login_user()
+        homepage(boolean,username,authenticator)
+    except:
+        pass
+
+
+# aevbui 
