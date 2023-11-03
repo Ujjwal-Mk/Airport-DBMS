@@ -6,7 +6,8 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "varunbwaj",
-    "database": "airport_staff_management",
+    # "password": "ujjwalmk",
+    "database": "airport",
 }
 
 try:

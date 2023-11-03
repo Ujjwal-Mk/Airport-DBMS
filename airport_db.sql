@@ -175,6 +175,12 @@ INSERT INTO Services (type, airplane_id, provider_name, price, capacity, availab
 ('Fueling', 9, 'World Fuel Services', 500, 50, 'Available'),
 ('Gate handling', 10, 'Swissport', 100, 50, 'Available');
 
+
+INSERT INTO Airplanes (airplane_id, type, airline_id)
+VALUES
+    (13, 'Airbus A320-200', 2),
+    (14, 'Airbus A321-200', 2),
+    (15, 'Boeing 777-200', 3);
 -- SELECT `airplane_id`,`type` FROM `Airplanes`
 -- WHERE airline_id=1;
 
