@@ -3,17 +3,8 @@ import time
 import mysql.connector
 import pandas as pd
 from streamlit_option_menu import option_menu
+from dbconfig import ret_db_config
 
-def ret_db_config():
-    db_config = {
-        "host": "localhost",
-        "user": "root",
-        # "password": "ujjwalmk",
-        "password": "varunbwaj",
-        # "database": "airport_staff_management"
-        "database": "airport"
-        }
-    return db_config
 
 import tab1 as tb1, \
        tab2 as tb2, \

@@ -1,14 +1,7 @@
 import mysql.connector
 import streamlit_authenticator as stauth
 # Database connection parameters
-
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    # "password": "varunbwaj",
-    "password": "ujjwalmk",
-    "database": "airport",
-}
+from dbconfig import ret_db_config as db_config
 
 try:
     # Establish a connection to the MySQL database
