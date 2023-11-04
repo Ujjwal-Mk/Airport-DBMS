@@ -470,7 +470,7 @@ VALUES
 
 -- -- Month airplane count
 
-SELECT * FROM ResourceInventory;
+-- SELECT * FROM ResourceInventory;
 
 -- SELECT * FROM GroundHandlingRequests;
 -- SELECT * FROM FuelingCenters;

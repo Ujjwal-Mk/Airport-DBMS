@@ -5,8 +5,8 @@ import streamlit_authenticator as stauth
 db_config = {
     "host": "localhost",
     "user": "root",
-    "password": "varunbwaj",
-    # "password": "ujjwalmk",
+    # "password": "varunbwaj",
+    "password": "ujjwalmk",
     "database": "airport",
 }
 

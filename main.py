@@ -8,14 +8,21 @@ def ret_db_config():
     db_config = {
         "host": "localhost",
         "user": "root",
-        # "password": "ujjwalmk",
-        "password": "varunbwaj",
+        "password": "ujjwalmk",
+        # "password": "varunbwaj",
         # "database": "airport_staff_management"
         "database": "airport"
         }
     return db_config
 
-import tab1 as tb1, tab2 as tb2, login as lg, user_auth as ua, tab3 as tb3, tab4 as tb4, tab5 as tb5, tab7 as tb7
+import tab1 as tb1, \
+       tab2 as tb2, \
+       login as lg, \
+       user_auth as ua,\
+       tab3 as tb3, \
+       tab4 as tb4, \
+       tab5 as tb5, \
+       tab7 as tb7
 
 def homepage(boolean,username,authenticator):
     if boolean:
@@ -35,16 +42,17 @@ def homepage(boolean,username,authenticator):
                 icons=auth_icons,
                 menu_icon="cast",
                 orientation="horizontal",
-                default_index=0
+                default_index=0,
+                # styles={
+                #     "container":{"background-color":"#2b2bed"},
+                #     "nav-link-selected": {"background-color": "green"}
+                # }
             )
 
             if selected_tab == "Tab 1":
                 tb1.display(cursor=cursor)
             elif selected_tab == "Tab 2":
-                try:
-                    tb2.inp_disp(cursor)
-                except mysql.connector.ProgrammingError as err:
-                    st.error("Wrong query!")
+                tb2.inp_disp(cursor=cursor)
             elif selected_tab=="Tab 3":
                 st.write("Testing Area")
                 tb3.disp()
@@ -56,8 +64,10 @@ def homepage(boolean,username,authenticator):
             elif selected_tab=="Tab 6":
                 st.write("Tab 6, updates loading")
             elif selected_tab=="Tab 7":
-                tb7.disp(cursor)
-                
+                try:
+                    tb7.disp(cursor)
+                except mysql.connector.ProgrammingError as err:
+                    st.error("Wrong query!")
             authenticator.logout("Logout","main")
 
         except mysql.connector.InterfaceError as e:
