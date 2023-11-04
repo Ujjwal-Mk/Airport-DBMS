@@ -8,8 +8,8 @@ def ret_db_config():
     db_config = {
         "host": "localhost",
         "user": "root",
-        "password": "ujjwalmk",
-        # "password": "varunbwaj",
+        # "password": "ujjwalmk",
+        "password": "varunbwaj",
         # "database": "airport_staff_management"
         "database": "airport"
         }
@@ -55,8 +55,8 @@ def homepage(boolean,username,authenticator):
             elif selected_tab == "Tab 2":
                 tb2.inp_disp(cursor=cursor)
             elif selected_tab=="Tab 3":
-                st.write("Testing Area")
-                tb3.disp()
+                # st.write("Testing Area")
+                tb3.disp(cursor)
             elif selected_tab=="Tab 4":
                 tb4.disp(cursor=cursor)
             elif selected_tab=="Tab 5":
