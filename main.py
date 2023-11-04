@@ -1,5 +1,4 @@
 import streamlit as st
-import tab1 as tb1, tab2 as tb2, login as lg, user_auth as ua, tab3 as tb3, tab4 as tb4, tab5 as tb5
 import time
 import mysql.connector
 import pandas as pd
@@ -15,6 +14,8 @@ def ret_db_config():
         "database": "airport"
         }
     return db_config
+
+import tab1 as tb1, tab2 as tb2, login as lg, user_auth as ua, tab3 as tb3, tab4 as tb4, tab5 as tb5, tab7 as tb7
 
 def homepage(boolean,username,authenticator):
     if boolean:
@@ -55,7 +56,7 @@ def homepage(boolean,username,authenticator):
             elif selected_tab=="Tab 6":
                 st.write("Tab 6, updates loading")
             elif selected_tab=="Tab 7":
-                st.write("Tab 7, updates loading")
+                tb7.disp(cursor)
                 
             authenticator.logout("Logout","main")
 

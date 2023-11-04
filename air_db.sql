@@ -1,3 +1,4 @@
+-- Active: 1696681355003@@127.0.0.1@3306@airport
 DROP DATABASE IF EXISTS airport;
 
 CREATE DATABASE airport;
@@ -112,12 +113,14 @@ CREATE TABLE ResourceInventory (
   Quantity INT NOT NULL,
   Location VARCHAR(255) NOT NULL,
   Status VARCHAR(255) NOT NULL,
+  MinimumQuantity INT NOT NULL,
+  MaximumQuantity INT NOT NULL,
   LastUpdated DATETIME NOT NULL,
+  NextScheduledMaintenance DATETIME DEFAULT (DATE_ADD(LastUpdated, INTERVAL 1 WEEK)),
   ServiceID INT NOT NULL,
   FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID),
   PRIMARY KEY (ResourceID)
 );
-
 -- Resource Request table
 CREATE TABLE ResourceRequests (
   RequestID INT NOT NULL AUTO_INCREMENT,
@@ -297,10 +300,11 @@ INSERT INTO ServiceDeIcingMethodMappings (ServiceID, DeIcingMethodID) VALUES
 (5, 3);
 
 -- Resource Inventory table
-INSERT INTO ResourceInventory (ResourceType, ResourceName, Quantity, Location, Status, LastUpdated, ServiceID) VALUES
-('Jet Fuel', 'Jet A1', 100000, 'Fuel Center A', 'In Service', '2023-11-01 08:00:00', 1),
-('De-Icing Fluid', 'Type I De-Icer', 50, 'Hangar X', 'In Service', '2023-11-01 10:00:00', 5),
-('Food Supplies', 'Meal Cartons', 10000, 'Catering Warehouse', 'In Service', '2023-11-02 09:30:00', 7);
+INSERT INTO ResourceInventory (ResourceType, ResourceName, Quantity, Location, Status, MinimumQuantity, MaximumQuantity, LastUpdated, ServiceID)
+VALUES
+('Jet Fuel', 'Jet A1', 100000, 'Fuel Center A', 'In Service', 5000, 200000, '2023-11-01 08:00:00', 1),
+('De-Icing Fluid', 'Type I De-Icer', 50, 'Hangar X', 'In Service', 10, 100, '2023-11-01 10:00:00', 5),
+('Food Supplies', 'Meal Cartons', 10000, 'Catering Warehouse', 'In Service', 500, 20000, '2023-11-02 09:30:00', 7);
 
 -- Resource Request table
 INSERT INTO ResourceRequests (ResourceID, Quantity, RequestedBy, RequestDate, Status, ServiceID) VALUES
@@ -364,6 +368,12 @@ INSERT INTO CommunicationLog (SenderID, RecipientID, MessageType, MessageSubject
 
 
 -- SELECT * FROM `Airlines`;
+
+-- SELECT `AirlineID`,COUNT(*) FROM `Airplanes` GROUP BY `AirlineID`;
+-- SELECT COUNT(*), a1.`AirlineName` FROM `Airplanes` as a0
+-- JOIN `Airlines` as a1
+-- ON a0.`AirlineID`=a1.`AirlineID`
+-- GROUP BY a1.`AirlineID`;
 
 CREATE TABLE MonthlyAirplaneCount (
   MonthlyCountID INT NOT NULL AUTO_INCREMENT,
@@ -432,3 +442,110 @@ VALUES
   (5, 2023, 10, 62),
   (5, 2023, 11, 64),
   (5, 2023, 12, 66);
+
+
+-- SHOW TABLES;
+-- SELECT * FROM `Airplanes`;
+-- SELECT  a0.`AirplaneRegistration`, a0.`AirplaneType`
+-- FROM `Airplanes` as a0
+-- JOIN `Airlines` as a1
+-- ON a0.`AirlineID`=a1.`AirlineID`
+-- WHERE a0.`AirlineID` = 4;
+
+
+
+-- SELECT * FROM `MonthlyAirplaneCount` as mac
+-- JOIN `Airlines` as a0
+-- ON mac.`AirlineID` = a0.`AirlineID`
+-- WHERE mac.`AirlineID` = 1
+-- ORDER BY `Month`;
+
+
+-- SELECT mac.`AirplaneCount`, mac.`Year`,mac.`Month`
+-- FROM MonthlyAirplaneCount as mac
+-- JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
+-- WHERE mac.AirlineID = 1
+-- ORDER BY YEAR(mac.Month), MONTH(mac.Month);
+
+
+-- -- Month airplane count
+
+SELECT * FROM ResourceInventory;
+
+-- SELECT * FROM GroundHandlingRequests;
+-- SELECT * FROM FuelingCenters;
+
+-- SHOW TABLES;
+
+
+-- SELECT `ResourceID`, `ResourceName` FROM ResourceInventory;
+
+-- -- Graveyard
+-- SELECT `Quantity` FROM `ResourceInventory`
+-- WHERE `ResourceID` = 1;
+
+
+-- ALTER TABLE ResourceInventory
+-- ADD COLUMN `MinimumQuantity` INT,
+-- ADD COLUMN `MaximumQuantity` INT,
+
+-- SELECT * FROM ResourceInventory;
+
+-- SELECT MinimumQuantity,  Quantity as `current quantity`, MaximumQuantity FROM `ResourceInventory` WHERE `ResourceID`=1;
+
+
+-- SELECT NextScheduledMaintenance FROM ResourceInventory WHERE `ResourceID`=1;
+
+-- SELECT LastUpdated FROM ResourceInventory WHERE `ResourceID`=1;
+
+
+-- UPDATE ResourceInventory
+-- SET Quantity = Quantity + `extra Quantity`
+-- WHERE ResourceID = 1;
+
+
+-- SHOW TABLES;
+
+
+-- SELECT * FROM `CommunicationLog`;
+
+-- SELECT * FROM `IncidentReport`;
+
+-- SELECT `IncidentDescription` FROM `IncidentReport` ORDER BY `IncidentDate` DESC LIMIT 3;
+
+
+-- SELECT `MessageSubject`, `MessageBody` FROM `CommunicationLog` WHERE `MessageType` LIKE ('%Emergency%') ORDER BY `SentDate` DESC LIMIT 5;
+-- SELECT `MessageSubject`, `MessageBody` FROM `CommunicationLog` WHERE `MessageType` LIKE ('%Notification%') ORDER BY `SentDate` DESC LIMIT 5;
+
+-- INSERT INTO CommunicationLog (SenderID, RecipientID, MessageType, MessageSubject, MessageBody, SentDate) VALUES
+-- (%s,%s,%s,%s,%s,%s);
+
+-- 
+
+-- SHOW TABLES;
+
+-- SELECT * FROM `GateAllocation`;
+
+
+
+-- SELECT * from `Services`;
+	
+-- SELECT 
+-- 	a0.`AirplaneType`, a0.`AirplaneRegistration`,  
+-- 	GHR.`GroundHandlingService`, GHR.`RequestDate`, GHR.`Status`
+-- FROM `GroundHandlingRequests` as GHR
+-- JOIN `Airplanes` as a0
+-- ON GHR.`AirplaneID` = a0.`AirplaneID`;
+
+-- SELECT 
+-- 	GA.`ArrivalDate`, GA.`DepartureDate`, GA.`FlightNumber`, 
+-- 	a0.`AirlineName`, 
+-- 	a1.`AirplaneType`, a1.`AirplaneRegistration`, 
+-- 	GW.`GatewayLocation`
+-- FROM `GateAllocation` as GA
+-- JOIN `Airlines` as a0
+-- ON a0.`AirlineID` = GA.`AirlineID`
+-- JOIN `Airplanes` as a1
+-- ON a1.`AirplaneID` = GA.`AirplaneID`
+-- JOIN `Gateways` as GW
+-- ON GW.`GatewayID` = GA.`GateID`;
