@@ -10,17 +10,29 @@ def inp_disp(cursor):
         st.session_state.submitted = False
     air_names_dict = get_names_dict(cursor)
     air_name_list = list(air_names_dict.keys())
-    st.selectbox(label='Airline name',options=air_name_list,index=None,key='airlinename',on_change=submitted, placeholder="Select Any Airline")
-    with st.container:
-        c1,c2 = st.columns([0.25,0.75])
-        with c1:
-            if 'submitted' in st.session_state and st.session_state.submitted == True:
-                st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name]))
+    st.selectbox(label='Airline name',options=air_name_list,index=None,key='air_name',on_change=submitted, placeholder="Select Any Airline")
+    if 'submitted' in st.session_state and st.session_state.submitted == True:    
+        with st.container():
+            c1,c2 = st.columns([0.25,0.75])
+            with c1:
+                operate_str = '''SELECT  a0.`AirplaneRegistration`, a0.`AirplaneType`
+                        FROM `Airplanes` as a0
+                        JOIN `Airlines` as a1
+                        ON a0.`AirlineID`=a1.`AirlineID`
+                        WHERE a0.`AirlineID` = %s;'''
+                st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str), use_container_width=True)
                 reset()
-        with c2:
-            pass
-    with st.container:
-        st.header(":red[Revenue] over the months")
+            with c2:
+                pass
+        with st.container():
+            st.header(":red[Revenue] over the months")
+            operate_str="""SELECT mac.`AirplaneCount`, mac.`Year`,mac.`Month`
+                        FROM MonthlyAirplaneCount as mac
+                        JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
+                        WHERE mac.AirlineID = %s
+                        ORDER BY YEAR(mac.Month), MONTH(mac.Month);"""
+            st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str))
+            reset()
 
         
 
@@ -39,15 +51,11 @@ def get_names_dict(cursor):
         print(f"Error: {err}")
 
 
-def get_df(cursor,char):
+def get_df(cursor,char, operate_str):
     try:
-        operate_str = '''SELECT s.type, a1.type as t1  FROM airplanes a1 JOIN
-                    airlines a2 ON a1.airline_id = a2.airline_id JOIN
-                    services s ON a1.airplane_id = s.airplane_id where a2.airline_id=%s;'''
         cursor.execute(operate_str,(char,))
         cols = [i[0] for i in cursor.description]
         rows = cursor.fetchall()
-        print(pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)]))
         return (pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)]))
     except:
         pass

@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import altair as alt
 def display(cursor):
-    st.header(":green[General Airport Information]")
     st.text("")
+    st.header(":green[General Airport Information]")
     st.text("")
     # st.write("This is the content for Tab 1.")
     x1,x2 = st.columns([0.25,0.75])
@@ -15,7 +15,7 @@ def display(cursor):
             rows=cursor.fetchall()
             st.header("Unique Airlines:")
             df = pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)])
-            st.dataframe(df)
+            st.dataframe(df, use_container_width=True)
     with x2:
         with st.container():
             cursor.execute("select count(*) as UniqueAirLines, a1.AirlineName \
