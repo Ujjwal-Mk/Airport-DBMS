@@ -22,6 +22,7 @@ import tab1 as tb1, \
        tab3 as tb3, \
        tab4 as tb4, \
        tab5 as tb5, \
+       tab6 as tb6, \
        tab7 as tb7
 
 def homepage(boolean,username,authenticator):
@@ -59,10 +60,9 @@ def homepage(boolean,username,authenticator):
             elif selected_tab=="Tab 4":
                 tb4.disp(cursor=cursor)
             elif selected_tab=="Tab 5":
-                # st.write("Tab 5, updates loading")
-                tb5.ATC()
+                tb5.Maintenance(cursor=cursor)
             elif selected_tab=="Tab 6":
-                st.write("Tab 6, updates loading")
+                tb6.GHS(cursor=cursor)
             elif selected_tab=="Tab 7":
                 try:
                     tb7.disp(cursor)

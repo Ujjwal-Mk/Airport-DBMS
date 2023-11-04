@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import altair as alt
 def display(cursor):
     st.text("")
-    st.header(":green[General Airport Information]")
+    st.header(":orange[General Airport Information]")
     st.text("")
     # st.write("This is the content for Tab 1.")
     x1,x2 = st.columns([0.25,0.75])

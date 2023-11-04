@@ -19,15 +19,16 @@ def disp(cursor):
         def reset():
             st.session_state.submitted = False
         def create_user_registration():
-            with st.form("my_form"):
-                st.text_input("Username",key="uname")
-                st.text_input("Password",type='password',key='Pass')
-                st.text_input("First Name",key='f_name')
-                st.text_input("Middle Initials",key='minit')
-                st.text_input("Last Name",key='l_name')
-                st.selectbox("Authorization Level",['0','1','2'],index=2,key='auth_lvl')
-                st.form_submit_button("Submit",on_click=submitted)
-            st.button("Cancel",on_click=reset)
+            with st.expander("Register :green[New User] Here:"):
+                with st.form("my_form"):
+                    st.text_input("Username",key="uname")
+                    st.text_input("Password",type='password',key='Pass')
+                    st.text_input("First Name",key='f_name')
+                    st.text_input("Middle Initials",key='minit')
+                    st.text_input("Last Name",key='l_name')
+                    st.selectbox("Authorization Level",['0','1','2'],index=2,key='auth_lvl')
+                    st.form_submit_button("Submit",on_click=submitted)
+                st.button("Cancel",on_click=reset)
         if 'submitted' in st.session_state:
             if st.session_state.submitted == True:
                 uname = st.session_state.uname
@@ -39,7 +40,6 @@ def disp(cursor):
                 gk.add_usr(uname,Pass,f_name,minit,l_name,auth_lvl)
                 reset()
                 st.success("New User added")
-        if st.button("Register"):
-            reset()
-            create_user_registration()
+        reset()
+        create_user_registration()
                 

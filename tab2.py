@@ -25,13 +25,14 @@ def inp_disp(cursor):
             with c2:
                 pass
         with st.container():
-            st.header(":red[Revenue] over the months")
-            operate_str="""SELECT mac.`AirplaneCount`, mac.`Year`,mac.`Month`
+            st.header(":red[Airplane Count] over the months")
+            operate_str="""SELECT mac.`AirplaneCount`,mac.`Month`
                         FROM MonthlyAirplaneCount as mac
                         JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
                         WHERE mac.AirlineID = %s
-                        ORDER BY YEAR(mac.Month), MONTH(mac.Month);"""
-            st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str))
+                        ORDER BY (mac.Month);"""
+            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"))
+            # need to handle multiple years, for now only months have been used
             reset()
 
         
