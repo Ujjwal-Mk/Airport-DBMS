@@ -8,6 +8,8 @@ def disp(cursor):
         st.session_state.submitted = True
     def reset():
         st.session_state.submitted = False
+    def restock():
+        values = st.select_slider("Select Quantity to be restocked:")
     resource_dict = get_resource_dict(cursor)
     resource_names_list = list(resource_dict.keys())
     st.selectbox(label='Resource Name',options = resource_names_list,index=None,key='resource_name',on_change=submitted,placeholder='Select a resource')
@@ -16,19 +18,25 @@ def disp(cursor):
             operate_str = '''SELECT  `MinimumQuantity`, `Quantity`,`MaximumQuantity` FROM `ResourceInventory`
                             WHERE `ResourceID` = %s;'''
             graph = get_df(cursor,resource_dict[st.session_state.resource_name],operate_str)
-            # graph_cols = graph.columns.to_list()
-            # st.write(graph_cols)
             columns = graph.columns.to_list()
             rows = graph.values.tolist()[0]
-            # print(type(rows),type(columns))
-            # print(columns)
-            # print(rows)
             data = {
                 'Category' : [i for i in columns],
                 'Value' : [j for j in rows]
             }
             graph2 = pd.DataFrame(data)
+            min1 = int(graph['MinimumQuantity'].values[0])
+            currval = int(graph['Quantity'].values[0])
+            max1 = int(graph['MaximumQuantity'].values[0])
             st.bar_chart(graph2.set_index('Category'))
+        # with st.container():
+        #     with st.expander("Restock"):
+        #         with st.form():
+        #             # values = st.select_slider("Select Quantity to be restocked:",
+        #             #                         options= [i for i in range(min1,max1)])
+        #             # st.write("Restock Value: ",values)
+        #             st.form_submit_button('Submit')
+        #         reset()
         with st.container():
             operate_str = '''SELECT NextScheduledMaintenance FROM 
                             ResourceInventory WHERE `ResourceID`=%s;'''
@@ -49,7 +57,6 @@ def disp(cursor):
             time = ':'.join(time_component)
             display_str = f"The Last Scheduled Maintenance was on {date} at {time}"
             st.header(display_str)
-            
         reset()
     
 def get_resource_dict(cursor):
