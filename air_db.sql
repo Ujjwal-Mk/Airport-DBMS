@@ -478,16 +478,13 @@ VALUES
 -- SHOW TABLES;
 
 
--- SELECT `ResourceID`, `ResourceName` FROM ResourceInventory;
 
--- -- Graveyard
--- SELECT `Quantity` FROM `ResourceInventory`
--- WHERE `ResourceID` = 1;
+-- Graveyard
+
+-- SELECT  `MinimumQuantity`, `Quantity`,`MaximumQuantity` FROM `ResourceInventory`
+-- WHERE `ResourceID` = %s;
 
 
--- ALTER TABLE ResourceInventory
--- ADD COLUMN `MinimumQuantity` INT,
--- ADD COLUMN `MaximumQuantity` INT,
 
 -- SELECT * FROM ResourceInventory;
 
@@ -496,12 +493,12 @@ VALUES
 
 -- SELECT NextScheduledMaintenance FROM ResourceInventory WHERE `ResourceID`=1;
 
--- SELECT LastUpdated FROM ResourceInventory WHERE `ResourceID`=1;
+-- SELECT LastUpdated FROM ResourceInventory WHERE `ResourceID`=%s;
 
 
 -- UPDATE ResourceInventory
 -- SET Quantity = Quantity + `extra Quantity`
--- WHERE ResourceID = 1;
+-- WHERE ResourceID = %s;
 
 
 -- SHOW TABLES;
