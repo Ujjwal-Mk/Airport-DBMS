@@ -2,7 +2,7 @@ import streamlit as st
 import mysql.connector
 from dbconfig import ret_db_config as db_config
 import pandas as pd
-
+import main as mp
 def get_types(cursor):
     cursor.execute('SELECT DISTINCT `MessageType` FROM `CommunicationLog`;')
     rows = cursor.fetchall()
@@ -72,3 +72,5 @@ def disp(cursor, conn):
                     print(err)
                 st.success("New message added")
                 reset()
+                # st.rerun()
+                disp(cursor,conn)
