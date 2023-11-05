@@ -51,20 +51,23 @@ def disp(cursor, conn):
                     - {row[1]}
                 ''')
     with st.container():
-        Subject=None;body=None;radios=None
-        with st.form("my_form2", clear_on_submit=True):
-            st.text_input('Message Subject',key='Subject')
-            st.text_input("Message Body",key='body')
-            radios = st.radio('Message Type',options=get_types(cursor))
-            st.form_submit_button('Submit',on_click=submitted)
-            Subject=str(st.session_state.Subject)
-            body=str(st.session_state.body)
-        if Subject!=None and radios!=None and body!=None and Subject!="" and body!="" and radios!="":
-            if 'submitted' in st.session_state and st.session_state.submitted==True:
-                operate_str=f"INSERT INTO CommunicationLog (MessageType,\
-                            MessageSubject, MessageBody, SentDate)\
-                            VALUES ('{radios}', '{Subject}', '{body}', CURRENT_TIMESTAMP);"
-                cursor.execute(operate_str)
-                conn.commit()
-                st.success("New message added")
-                reset()
+        def add_message():
+            Subject=None;body=None;radios=None
+            with st.form("my_form2", clear_on_submit=True):
+                st.text_input('Message Subject',key='Subject')
+                st.text_input("Message Body",key='body')
+                radios = st.radio('Message Type',options=get_types(cursor))
+                st.form_submit_button('Submit',on_click=submitted)
+                Subject=str(st.session_state.Subject)
+                body=str(st.session_state.body)
+            if Subject!=None and radios!=None and body!=None and Subject!="" and body!="" and radios!="":
+                if 'submitted' in st.session_state and st.session_state.submitted==True:
+                    operate_str=f"INSERT INTO CommunicationLog (MessageType,\
+                                MessageSubject, MessageBody, SentDate)\
+                                VALUES ('{radios}', '{Subject}', '{body}', CURRENT_TIMESTAMP);"
+                    cursor.execute(operate_str)
+                    conn.commit()
+                    st.success("New message added")
+                    reset()
+        if st.button('Add Message'):
+            add_message()

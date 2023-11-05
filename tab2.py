@@ -16,7 +16,7 @@ def inp_disp(cursor):
     st.selectbox(label='Airline name',options=air_name_list,index=None,key='air_name',on_change=submitted, placeholder="Select Any Airline")
     if 'submitted' in st.session_state and st.session_state.submitted == True:    
         with st.container():
-            c1,c2 = st.columns([0.25,0.75])
+            c1,c2 = st.columns([0.35,0.65])
             with c1:
                 operate_str = '''SELECT  a0.`AirplaneRegistration`, a0.`AirplaneType`
                         FROM `Airplanes` as a0
@@ -26,7 +26,15 @@ def inp_disp(cursor):
                 st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str), use_container_width=True)
                 reset()
             with c2:
-                pass
+                operate_str = 'SELECT `NumberOfEmployees`, `NumberOfPassengers`as `Total Passengers Flown` \
+                                FROM `Airlines` WHERE `AirlineID` = %s;'
+                cursor.execute(operate_str,(air_names_dict[st.session_state.air_name],))
+                rows = cursor.fetchall()
+                for row in rows:
+                    st.markdown(f'''
+                            - Total Number of Employees: {row[0]}
+                            - Total Number of Passengers Flown: {row[1]}
+                    ''')
         with st.container():
             st.header("Airplane Count over the months")
             operate_str="""SELECT mac.`AirplaneCount`,mac.`Month`
@@ -34,7 +42,8 @@ def inp_disp(cursor):
                         JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
                         WHERE mac.AirlineID = %s
                         ORDER BY (mac.Month);"""
-            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"), color='#768b69')
+            # st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"), color='#768b69')
+            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"),color='#91c2f9')
             # need to handle multiple years, for now only months have been used
             reset()
 

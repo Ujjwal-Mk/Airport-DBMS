@@ -583,3 +583,5 @@ VALUES
 -- select * from CommunicationLog;
 
 -- SELECT * FROM usr_info1;
+-- SELECT * FROM `Airlines`;
+-- SELECT `NumberOfEmployees`, `NumberOfPassengers`as `Total Passengers Flown` FROM `Airlines` WHERE `AirlineID` = 1;

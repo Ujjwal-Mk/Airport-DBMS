@@ -13,7 +13,7 @@ def display(cursor):
             cursor.execute("select AirlineName from airlines;")
             cols=[i[0] for i in cursor.description]
             rows=cursor.fetchall()
-            st.header("Unique Airlines:")
+            st.header("Airlines")
             df = pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)])
             st.dataframe(df, use_container_width=True)
     with x2:
@@ -23,6 +23,11 @@ def display(cursor):
                           as a1 on a0.AirlineID=a1.AirlineID group by a1.AirlineID;")
             cols1 = [i[0] for i in cursor.description]
             rows1=cursor.fetchall()
-            st.header("Number of unique Airlines in the airport")
+            st.header("Airplanes in the airport")
             graph = pd.DataFrame(rows1, columns=cols1, index=[i for i in range(1,len(rows1)+1)]).set_index(cols1[1])
-            st.bar_chart(graph,color='#768b69')
+            # st.bar_chart(graph,color='#768b69')
+            st.bar_chart(graph,color='#91c2f9')
+
+
+
+
