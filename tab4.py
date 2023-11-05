@@ -4,7 +4,7 @@ import mysql.connector
 import numpy as np
 import time
 
-def disp(cursor):
+def disp(cursor,conn):
     st.text("")
     st.header("Resource Inventory")
     st.text("")
@@ -12,10 +12,12 @@ def disp(cursor):
         st.session_state.submitted = True
     def reset():
         st.session_state.submitted = False
+    def selected():
+        st.session_state.selected = True
     resource_dict = get_resource_dict(cursor)
     resource_names_list = list(resource_dict.keys())
-    st.selectbox(label='Resource Name',options = resource_names_list,index=None,key='resource_name',on_change=submitted,placeholder='Select a resource')
-    if 'submitted' in st.session_state and st.session_state.submitted == True:
+    st.selectbox(label='Resource Name',options = resource_names_list,index=None,key='resource_name',on_change=selected,placeholder='Select a resource')
+    if st.session_state.selected == True:
         with st.container():
             c1,c2 = st.columns([0.70,0.30])
             with c1:
@@ -51,23 +53,22 @@ def disp(cursor):
                 time = str(graph.LastUpdated.values[0]).split("T")[1].split(".")[0]; st.write("")
                 st.write(f"The Last Scheduled Maintenance was on :green[{date}] at {time}")
         with st.container():
-            with st.expander('Restock'):
-                with st.form("my_form1"):
-                    val = st.select_slider("Restock Quantity",options=[i for i in range(min1, max1-currval+1)])
-                    submitt = st.form_submit_button("Submit")
-                    if submitt:
-                        # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
-                        st.write("Selected Value is : ",val)
-                        operate_str = """
-                            Update ResourceInventory
-                            SET Quantity= %s
-                            WHERE `ResourceID` = %s;
-                        """
-                        data = (currval+val,resource_dict[st.session_state.resource_name])
-                        cursor.execute(operate_str,data)
-                        st.write("Successfull")
-                        st.success(":green[Restocked!]")
-            reset()
+            with st.form("my_form1"):
+                val = st.select_slider("Restock Quantity",options=[i for i in range(min1, max1-currval+1)])
+                submitt = st.form_submit_button("Submit")
+                if submitt:
+                    # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
+                    st.write("Selected Value is : ",val)
+                    operate_str = """
+                        Update ResourceInventory
+                        SET Quantity= %s
+                        WHERE `ResourceID` = %s;
+                    """
+                    data = (currval+val,resource_dict[st.session_state.resource_name])
+                    cursor.execute(operate_str,data)
+                    st.write("Successfull")
+                    st.success(":green[Restocked!]")
+                    reset()
     
 def get_resource_dict(cursor):
     try:

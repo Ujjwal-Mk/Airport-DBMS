@@ -49,7 +49,7 @@ def homepage(boolean,username,authenticator):
                 # tb3.disp(cursor)
                 tb3.disp(cursor=cursor, conn=conn)
             elif selected_tab=="Inventory":
-                tb4.disp(cursor)
+                tb4.disp(cursor, conn=conn)
                 # tb4.disp(cursor=cursor, conn=conn)
             elif selected_tab=="Maintenance":
                 tb5.Maintenance(cursor=cursor)
