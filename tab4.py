@@ -51,6 +51,7 @@ def disp(cursor, conn):
                     - {row[1]}
                 ''')
     with st.container():
+        st.write("");st.header("Push New Message?")
         Subject=None;body=None;radios=None
         with st.form("my_form2", clear_on_submit=True):
             st.text_input('Message Subject',key='Subject')

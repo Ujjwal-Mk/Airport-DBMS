@@ -3,3 +3,4 @@ output.txt
 username_passwords.sql
 test.py
 dbconfig.py
+.streamlit
