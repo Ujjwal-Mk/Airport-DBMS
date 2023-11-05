@@ -39,7 +39,11 @@ INSERT INTO usr_info1(f_name, l_name, minit, username, hashed_pass, auth_level) 
 ('David', 'Lee', 'G', 'davidl', 'david123', '2'),
 ('Laura', 'Clark', 'H', 'laura.c', 'laura456', '1'),
 ('James', 'Anderson', 'I', 'james123', 'pass789', '0'),
-('Sophia', 'Martinez', 'J', 'sophiam', 'sophia123', '2');
+('Sophia', 'Martinez', 'J', 'sophiam', 'sophia123', '2'),
+('Admin','Admin','','admin','abc','0'),
+('Peter','Parker','P','ppparker','1234567890','0'),
+('James','May','','jamesmay','captainslow','1'),
+('Richard','Hammond','','richardham','hamster','2');
 
 
 -- Airlines table
@@ -351,6 +355,52 @@ INSERT INTO CommunicationLog (MessageType, MessageSubject, MessageBody, SentDate
 ('Notification', 'Gate Change', 'Gate A1 changed to Gate B2', '2023-11-05 09:15:00'),
 ('Emergency', 'Safety Alert', 'Emergency on Runway C, please divert flights', '2023-11-07 10:32:00');
 
+DELIMITER //
+
+CREATE PROCEDURE GetMaintenanceData()
+BEGIN
+    SELECT `RequestedBy`, `MaintenanceType`, `RequestDate`, `Status`, a0.`AirplaneType`, a0.`AirplaneRegistration`
+    FROM `MaintenanceRequests` AS mr
+    JOIN `Airplanes` AS a0 ON a0.`AirplaneID` = mr.`AirplaneID`
+    UNION ALL
+    SELECT a1.`AirlineName` AS `RequestedBy`, MaintenanceType, ScheduledDate, `Status`, a0.`AirplaneType`, a0.`AirplaneRegistration`
+    FROM `MaintenanceSchedule` AS ms
+    JOIN `Airplanes` AS a0 ON a0.`AirplaneID` = ms.`AirplaneID`
+    JOIN `Airlines` AS a1 ON a1.`AirlineID` = a0.`AirlineID`;
+END//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE GetMaintenanceData()
+BEGIN
+    SELECT
+        GA.`ArrivalDate`, GA.`DepartureDate`, GA.`FlightNumber`,
+        a0.`AirlineName`,
+        a1.`AirplaneType`, a1.`AirplaneRegistration`,
+        GW.`GatewayLocation`
+    FROM `GateAllocation` AS GA
+    JOIN `Airlines` AS a0 ON a0.`AirlineID` = GA.`AirlineID`
+    JOIN `Airplanes` AS a1 ON a1.`AirplaneID` = GA.`AirplaneID`
+    JOIN `Gateways` AS GW ON GW.`GatewayID` = GA.`GateID`;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE GetGroundHandlingServiceData()
+BEGIN
+    SELECT
+        a0.`AirplaneType`, a0.`AirplaneRegistration`,
+        GHR.`GroundHandlingService`, GHR.`RequestDate`, GHR.`Status`
+    FROM `GroundHandlingRequests` AS GHR
+    JOIN `Airplanes` AS a0 ON GHR.`AirplaneID` = a0.`AirplaneID`;
+END//
+
+DELIMITER ;
 
 
 -- SELECT
@@ -585,3 +635,4 @@ VALUES
 -- SELECT * FROM usr_info1;
 -- SELECT * FROM `Airlines`;
 -- SELECT `NumberOfEmployees`, `NumberOfPassengers`as `Total Passengers Flown` FROM `Airlines` WHERE `AirlineID` = 1;
+-- SELECT * FROM usr_info1;

@@ -5,33 +5,31 @@ def GHS(cursor):
     st.write("")
     with st.container():
         st.header("Hangar bay")
-        cursor.execute('''
-            SELECT 
-            GA.`ArrivalDate`, GA.`DepartureDate`, GA.`FlightNumber`, 
-            a0.`AirlineName`, 
-            a1.`AirplaneType`, a1.`AirplaneRegistration`, 
-            GW.`GatewayLocation`
-            FROM `GateAllocation` as GA
-            JOIN `Airlines` as a0
-            ON a0.`AirlineID` = GA.`AirlineID`
-            JOIN `Airplanes` as a1
-            ON a1.`AirplaneID` = GA.`AirplaneID`
-            JOIN `Gateways` as GW
-            ON GW.`GatewayID` = GA.`GateID`;
-        ''')
-        cols = [i[0] for i in cursor.description]
-        rows = cursor.fetchall()
-        st.dataframe(pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)]), use_container_width=True)
+        cursor.callproc("GetMaintenanceData")  
+        for result in cursor.stored_results():
+            rows = result.fetchall()
+            cols = [i[0] for i in result.description]
+
+        st.dataframe(pd.DataFrame(rows, columns=cols,index=[i for i in range(1,len(rows)+1)]),use_container_width=True)
+
     with st.container():
         st.header("Ground Handling Service Requests")
-        cursor.execute('''
-            SELECT 
-            a0.`AirplaneType`, a0.`AirplaneRegistration`,  
-            GHR.`GroundHandlingService`, GHR.`RequestDate`, GHR.`Status`
-            FROM `GroundHandlingRequests` as GHR
-            JOIN `Airplanes` as a0
-            ON GHR.`AirplaneID` = a0.`AirplaneID`;
-        ''')
-        cols = [i[0] for i in cursor.description]
-        rows = cursor.fetchall()
-        st.dataframe(pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)]), use_container_width=True)
+        # cursor.execute('''
+        #     SELECT 
+        #     a0.`AirplaneType`, a0.`AirplaneRegistration`,  
+        #     GHR.`GroundHandlingService`, GHR.`RequestDate`, GHR.`Status`
+        #     FROM `GroundHandlingRequests` as GHR
+        #     JOIN `Airplanes` as a0
+        #     ON GHR.`AirplaneID` = a0.`AirplaneID`;
+        # ''')
+        # cols = [i[0] for i in cursor.description]
+        # rows = cursor.fetchall()
+        cursor.callproc("GetGroundHandlingServiceData")  # Replace with your procedure name
+
+        # Fetch the result set
+        for result in cursor.stored_results():
+            rows = result.fetchall()
+            cols = [i[0] for i in result.description]
+
+        # Convert the result to a Pandas DataFrame
+        st.dataframe(pd.DataFrame(rows, columns=cols,index=[i for i in range(1,len(rows)+1)]), use_container_width=True)

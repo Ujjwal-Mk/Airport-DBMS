@@ -41,8 +41,11 @@ def get_options(username):
     acc_auth_options=["General","Statistics","Logs","Inventory","Maintenance","GHS","Settings"]
     acc_auth_icons=['1-circle-fill','2-circle-fill','3-circle-fill','4-circle-fill','5-circle-fill','6-circle-fill','7-circle-fill']
     if auth_lvl == "2":
-        auth_icons = acc_auth_icons[:5]
-        auth_options = acc_auth_options[:5]
+        auth_icons = acc_auth_icons[:4]
+        auth_options = acc_auth_options[:4]
+    elif auth_lvl =="1":
+        auth_icons = acc_auth_icons[:6]
+        auth_options = acc_auth_options[:6]
     else:
         auth_icons = acc_auth_icons
         auth_options = acc_auth_options
