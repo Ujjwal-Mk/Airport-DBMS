@@ -1,3 +1,4 @@
+-- SQLBook: Code
 -- Active: 1696681355003@@127.0.0.1@3306@airport
 DROP DATABASE IF EXISTS airport;
 
@@ -220,14 +221,10 @@ PRIMARY KEY (IncidentID)
 -- Communication Log table
 CREATE TABLE CommunicationLog (
 MessageID INT NOT NULL AUTO_INCREMENT,
-SenderID INT NOT NULL,
-RecipientID INT NOT NULL,
 MessageType VARCHAR(255) NOT NULL,
 MessageSubject VARCHAR(255) NOT NULL,
 MessageBody VARCHAR(255) NOT NULL,
-SentDate DATETIME NOT NULL,
--- FOREIGN KEY (SenderID) REFERENCES Users(UserID),
--- FOREIGN KEY (RecipientID) REFERENCES Users(UserID),
+SentDate DATETIME DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY (MessageID)
 );
 
@@ -343,9 +340,9 @@ INSERT INTO IncidentReport (IncidentType, IncidentDate, IncidentLocation, Incide
 ('Accident', '2023-11-07 10:30:00', 'Runway C', 'Aircraft collision', 'American Airlines', 6);
 
 -- Communication Log table
-INSERT INTO CommunicationLog (SenderID, RecipientID, MessageType, MessageSubject, MessageBody, SentDate) VALUES
-(1, 2, 'Notification', 'Gate Change', 'Gate A1 changed to Gate B2', '2023-11-05 09:15:00'),
-(3, 1, 'Emergency', 'Safety Alert', 'Emergency on Runway C, please divert flights', '2023-11-07 10:32:00');
+INSERT INTO CommunicationLog (MessageType, MessageSubject, MessageBody, SentDate) VALUES
+('Notification', 'Gate Change', 'Gate A1 changed to Gate B2', '2023-11-05 09:15:00'),
+('Emergency', 'Safety Alert', 'Emergency on Runway C, please divert flights', '2023-11-07 10:32:00');
 
 
 
@@ -495,10 +492,13 @@ VALUES
 
 -- SELECT LastUpdated FROM ResourceInventory WHERE `ResourceID`=%s;
 
+-- SELECT * FROM `ResourceInventory` WHERE `ResourceID` = 1;
+
+-- -- 100000
 
 -- UPDATE ResourceInventory
--- SET Quantity = Quantity + `extra Quantity`
--- WHERE ResourceID = %s;
+-- SET Quantity = Quantity + 2
+-- WHERE ResourceID = 1;
 
 
 -- SHOW TABLES;
@@ -517,8 +517,8 @@ VALUES
 -- INSERT INTO CommunicationLog (SenderID, RecipientID, MessageType, MessageSubject, MessageBody, SentDate) VALUES
 -- (%s,%s,%s,%s,%s,%s);
 
--- 
-
+-- SELECT DISTINCT `MessageType` FROM `CommunicationLog`;
+-- SELECT * FROM `CommunicationLog`;
 -- SHOW TABLES;
 
 -- SELECT * FROM `GateAllocation`;
@@ -546,3 +546,11 @@ VALUES
 -- ON a1.`AirplaneID` = GA.`AirplaneID`
 -- JOIN `Gateways` as GW
 -- ON GW.`GatewayID` = GA.`GateID`;
+
+-- SELECT NOW() AS current_datetime;
+
+-- SELECT CURRENT_TIMESTAMP;
+
+-- select * from CommunicationLog;
+
+-- SELECT * FROM usr_info1;

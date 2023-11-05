@@ -3,9 +3,10 @@ import streamlit_authenticator as stauth
 # Database connection parameters
 from dbconfig import ret_db_config as db_config
 
+
 try:
     # Establish a connection to the MySQL database
-    connection = mysql.connector.connect(**db_config)
+    connection = mysql.connector.connect(**db_config())
 
     # Create a cursor object to interact with the database
     cursor = connection.cursor()

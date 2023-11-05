@@ -16,19 +16,22 @@ def disp(cursor):
         with st.container():
             c1,c2 = st.columns([0.70,0.30])
             with c1:
-                operate_str = '''SELECT  `MinimumQuantity`, `Quantity`,`MaximumQuantity` FROM `ResourceInventory`
-                                WHERE `ResourceID` = %s;'''
-                graph = get_df(cursor,resource_dict[st.session_state.resource_name],operate_str)
-                columns = graph.columns.to_list()
-                rows = graph.values.tolist()[0]
-                data = {
-                    'Category' : columns,
-                    'Value' : rows
-                }
-                min1 = int(graph['MinimumQuantity'].values[0])
-                currval = int(graph['Quantity'].values[0])
-                max1 = int(graph['MaximumQuantity'].values[0])
-                st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400)
+                def graph():
+                    operate_str = '''SELECT  `MinimumQuantity`, `Quantity`,`MaximumQuantity` FROM `ResourceInventory`
+                                    WHERE `ResourceID` = %s;'''
+                    graph = get_df(cursor,resource_dict[st.session_state.resource_name],operate_str)
+                    columns = graph.columns.to_list()
+                    rows = graph.values.tolist()[0]
+                    data = {
+                        'Category' : columns,
+                        'Value' : rows
+                    }
+                    min1 = int(graph['MinimumQuantity'].values[0])
+                    currval = int(graph['Quantity'].values[0])
+                    max1 = int(graph['MaximumQuantity'].values[0])
+                    st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400)
+                    return (min1,currval,max1)
+                min1,currval,max1 = graph()
             with c2:
                 operate_str = '''SELECT NextScheduledMaintenance FROM 
                                 ResourceInventory WHERE `ResourceID`=%s;'''
@@ -51,12 +54,14 @@ def disp(cursor):
                 if submitt:
                     # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
                     st.write("Selected Value is : ",val)
-                    cursor.execute("""
+                    operate_str = """
                         Update ResourceInventory
-                        SET Quantity={val}
-                        WHERE `ResourceID` = {resource_dict[st.session_state.resource_name]};
-                    """)
-
+                        SET Quantity= %s
+                        WHERE `ResourceID` = %s;
+                    """
+                    data = (currval+val,resource_dict[st.session_state.resource_name])
+                    cursor.execute(operate_str,data)
+                    print("Hello")
                     st.write("Successfull")
                     st.success(":green[Restocked!]")
         time.sleep(2)

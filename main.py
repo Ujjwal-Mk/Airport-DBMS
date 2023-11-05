@@ -49,7 +49,7 @@ def homepage(boolean,username,authenticator):
                 # st.write("Testing Area")
                 tb3.disp(cursor)
             elif selected_tab=="Tab 4":
-                tb4.disp(cursor=cursor)
+                tb4.disp(cursor=cursor, conn=conn)
             elif selected_tab=="Tab 5":
                 tb5.Maintenance(cursor=cursor)
             elif selected_tab=="Tab 6":
