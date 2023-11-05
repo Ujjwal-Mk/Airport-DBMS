@@ -28,7 +28,7 @@ def disp(cursor):
                 min1 = int(graph['MinimumQuantity'].values[0])
                 currval = int(graph['Quantity'].values[0])
                 max1 = int(graph['MaximumQuantity'].values[0])
-                st.bar_chart(pd.DataFrame(data).set_index("Category"))
+                st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400)
             with c2:
                 operate_str = '''SELECT NextScheduledMaintenance FROM 
                                 ResourceInventory WHERE `ResourceID`=%s;'''
@@ -50,13 +50,13 @@ def disp(cursor):
                 submitt = st.form_submit_button("Submit")
                 if submitt:
                     # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
+                    st.write("Selected Value is : ",val)
                     cursor.execute("""
                         Update ResourceInventory
                         SET Quantity={val}
                         WHERE `ResourceID` = {resource_dict[st.session_state.resource_name]};
                     """)
-                    
-                    st.write("Selected Value is : ",val)
+
                     st.write("Successfull")
                     st.success(":green[Restocked!]")
         time.sleep(2)
