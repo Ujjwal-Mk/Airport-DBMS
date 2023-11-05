@@ -32,7 +32,7 @@ def disp(cursor):
                     min1 = int(graph['MinimumQuantity'].values[0])
                     currval = int(graph['Quantity'].values[0])
                     max1 = int(graph['MaximumQuantity'].values[0])
-                    st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400, color='#768b69')
+                    st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400, color='#91c2f9')
                     return (min1,currval,max1)
                 min1,currval,max1 = graph()
             with c2:

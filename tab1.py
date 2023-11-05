@@ -23,7 +23,7 @@ def display(cursor):
                           as a1 on a0.AirlineID=a1.AirlineID group by a1.AirlineID;")
             cols1 = [i[0] for i in cursor.description]
             rows1=cursor.fetchall()
-            st.header("Airplanes in the airport")
+            st.header("Number of Airplanes in each Airline")
             graph = pd.DataFrame(rows1, columns=cols1, index=[i for i in range(1,len(rows1)+1)]).set_index(cols1[1])
             # st.bar_chart(graph,color='#768b69')
             st.bar_chart(graph,color='#91c2f9')

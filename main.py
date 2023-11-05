@@ -59,7 +59,7 @@ def homepage(boolean,username,authenticator):
                     tb7.disp(cursor)
                 except mysql.connector.ProgrammingError as err:
                     st.error("Wrong query!")
-            st.header("")
+            st.write("")
             authenticator.logout("Logout","main")
 
         except mysql.connector.InterfaceError as e:

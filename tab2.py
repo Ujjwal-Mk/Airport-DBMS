@@ -41,7 +41,7 @@ def inp_disp(cursor):
                             .fontcolor {
                                 font-size: 22px !important;
                                 font-family: "Sans-serif";
-                                color: #556F44;
+                                color: #91c2f9;
                             }
                             </style>
                             """, unsafe_allow_html=True)
@@ -79,7 +79,7 @@ def inp_disp(cursor):
                         JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
                         WHERE mac.AirlineID = %s
                         ORDER BY (mac.Month);"""
-            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"), color='#768b69')
+            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"), color='#91c2f9')
             reset()
 
         
