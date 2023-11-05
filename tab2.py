@@ -23,6 +23,7 @@ def inp_disp(cursor):
                         JOIN `Airlines` as a1
                         ON a0.`AirlineID`=a1.`AirlineID`
                         WHERE a0.`AirlineID` = %s;'''
+                st.markdown(f'<p class="big-font">Different Airplanes in this Airline</p>', unsafe_allow_html=True)
                 st.dataframe(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str), use_container_width=True)
                 reset()
             with c2:
