@@ -41,7 +41,7 @@ def inp_disp(cursor):
                             .fontcolor {
                                 font-size: 22px !important;
                                 font-family: "Sans-serif";
-                                color: #91c2f9;
+                                color: #0C74EB;
                             }
                             </style>
                             """, unsafe_allow_html=True)

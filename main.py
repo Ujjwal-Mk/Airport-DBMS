@@ -45,11 +45,12 @@ def homepage(boolean,username,authenticator):
                 tb1.display(cursor=cursor)
             elif selected_tab == "Statistics":
                 tb2.inp_disp(cursor=cursor)
-            elif selected_tab=="Inventory":
-                # st.write("Testing Area")
-                tb3.disp(cursor)
             elif selected_tab=="Logs":
-                tb4.disp(cursor=cursor, conn=conn)
+                # tb3.disp(cursor)
+                tb3.disp(cursor=cursor, conn=conn)
+            elif selected_tab=="Inventory":
+                tb4.disp(cursor)
+                # tb4.disp(cursor=cursor, conn=conn)
             elif selected_tab=="Maintenance":
                 tb5.Maintenance(cursor=cursor)
             elif selected_tab=="GHS":

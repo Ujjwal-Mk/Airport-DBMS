@@ -38,7 +38,7 @@ def login_user():
     
 def get_options(username):
     auth_lvl = gk.get_level(username)
-    acc_auth_options=["General","Statistics","Inventory","Logs","Maintenance","GHS","Settings"]
+    acc_auth_options=["General","Statistics","Logs","Inventory","Maintenance","GHS","Settings"]
     acc_auth_icons=['1-circle-fill','2-circle-fill','3-circle-fill','4-circle-fill','5-circle-fill','6-circle-fill','7-circle-fill']
     if auth_lvl == "2":
         auth_icons = acc_auth_icons[:5]
