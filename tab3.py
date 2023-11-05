@@ -5,6 +5,9 @@ import numpy as np
 import time
 
 def disp(cursor):
+    st.text("")
+    st.header("Resource Inventory")
+    st.text("")
     def submitted():
         st.session_state.submitted = True
     def reset():
@@ -29,7 +32,7 @@ def disp(cursor):
                     min1 = int(graph['MinimumQuantity'].values[0])
                     currval = int(graph['Quantity'].values[0])
                     max1 = int(graph['MaximumQuantity'].values[0])
-                    st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400)
+                    st.bar_chart(pd.DataFrame(data).set_index("Category"), height=400, color='#939393')
                     return (min1,currval,max1)
                 min1,currval,max1 = graph()
             with c2:
@@ -48,22 +51,22 @@ def disp(cursor):
                 time = str(graph.LastUpdated.values[0]).split("T")[1].split(".")[0]; st.write("")
                 st.write(f"The Last Scheduled Maintenance was on :green[{date}] at {time}")
         with st.container():
-            with st.form("my_form1"):
-                val = st.select_slider("Restock Quantity",options=[i for i in range(min1, max1-currval+1)])
-                submitt = st.form_submit_button("Submit")
-                if submitt:
-                    # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
-                    st.write("Selected Value is : ",val)
-                    operate_str = """
-                        Update ResourceInventory
-                        SET Quantity= %s
-                        WHERE `ResourceID` = %s;
-                    """
-                    data = (currval+val,resource_dict[st.session_state.resource_name])
-                    cursor.execute(operate_str,data)
-                    print("Hello")
-                    st.write("Successfull")
-                    st.success(":green[Restocked!]")
+            with st.expander('Restock'):
+                with st.form("my_form1"):
+                    val = st.select_slider("Restock Quantity",options=[i for i in range(min1, max1-currval+1)])
+                    submitt = st.form_submit_button("Submit")
+                    if submitt:
+                        # graph["Quantity"] = int(graph['Quantity'].values[0])+int(val)
+                        st.write("Selected Value is : ",val)
+                        operate_str = """
+                            Update ResourceInventory
+                            SET Quantity= %s
+                            WHERE `ResourceID` = %s;
+                        """
+                        data = (currval+val,resource_dict[st.session_state.resource_name])
+                        cursor.execute(operate_str,data)
+                        st.write("Successfull")
+                        st.success(":green[Restocked!]")
         time.sleep(2)
         reset()
     

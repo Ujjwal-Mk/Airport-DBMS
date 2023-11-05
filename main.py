@@ -41,20 +41,20 @@ def homepage(boolean,username,authenticator):
                 # }
             )
 
-            if selected_tab == "Tab 1":
+            if selected_tab == "General":
                 tb1.display(cursor=cursor)
-            elif selected_tab == "Tab 2":
+            elif selected_tab == "Statistics":
                 tb2.inp_disp(cursor=cursor)
-            elif selected_tab=="Tab 3":
+            elif selected_tab=="Inventory":
                 # st.write("Testing Area")
                 tb3.disp(cursor)
-            elif selected_tab=="Tab 4":
+            elif selected_tab=="Logs":
                 tb4.disp(cursor=cursor, conn=conn)
-            elif selected_tab=="Tab 5":
+            elif selected_tab=="Maintenance":
                 tb5.Maintenance(cursor=cursor)
-            elif selected_tab=="Tab 6":
+            elif selected_tab=="GHS":
                 tb6.GHS(cursor=cursor)
-            elif selected_tab=="Tab 7":
+            elif selected_tab=="Settings":
                 try:
                     tb7.disp(cursor)
                 except mysql.connector.ProgrammingError as err:
@@ -77,3 +77,4 @@ if __name__=="__main__":
         homepage(boolean,username,authenticator)
     except:
         pass
+

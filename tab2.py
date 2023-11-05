@@ -4,6 +4,9 @@ import main as mp
 import pandas as pd
 
 def inp_disp(cursor):
+    st.text("")
+    st.header("Airline Stastictics")
+    st.text("")
     def submitted():
         st.session_state.submitted = True
     def reset():
@@ -25,13 +28,13 @@ def inp_disp(cursor):
             with c2:
                 pass
         with st.container():
-            st.header(":red[Airplane Count] over the months")
+            st.header("Airplane Count over the months")
             operate_str="""SELECT mac.`AirplaneCount`,mac.`Month`
                         FROM MonthlyAirplaneCount as mac
                         JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
                         WHERE mac.AirlineID = %s
                         ORDER BY (mac.Month);"""
-            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"))
+            st.area_chart(get_df(cursor,air_names_dict[st.session_state.air_name],operate_str).set_index("Month"), color='#768b69')
             # need to handle multiple years, for now only months have been used
             reset()
 

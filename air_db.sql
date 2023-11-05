@@ -47,6 +47,8 @@ CREATE TABLE Airlines (
   AirlineID INT NOT NULL AUTO_INCREMENT,
   AirlineName VARCHAR(255) NOT NULL,
   AirlineCode VARCHAR(3) NOT NULL,
+  NumberOfEmployees INT,
+  NumberOfPassengers INT,
   PRIMARY KEY (AirlineID)
 );
 
@@ -229,12 +231,12 @@ PRIMARY KEY (MessageID)
 );
 
 -- Airlines table
-INSERT INTO Airlines (AirlineName, AirlineCode) VALUES
-('Delta Airlines', 'DL'),
-('American Airlines', 'AA'),
-('United Airlines', 'UA'),
-('Lufthansa', 'LH'),
-('Emirates', 'EK');
+INSERT INTO Airlines (AirlineName, AirlineCode, NumberOfEmployees, NumberOfPassengers) VALUES
+('Delta Airlines', 'DL', 10000, 5000000),
+('American Airlines', 'AA', 12000, 6000000),
+('United Airlines', 'UA', 11000, 5500000),
+('Lufthansa', 'LH', 15000, 7000000),
+('Emirates', 'EK', 20000, 8000000);
 
 -- Airplanes table
 -- Insert data into the new Airplanes table with AirlineID
@@ -242,18 +244,23 @@ INSERT INTO Airplanes (AirplaneType, AirplaneRegistration, AirlineID) VALUES
 ('Boeing 737-800', 'N123DA', 1),
 ('Airbus A320', 'N456AA', 2),
 ('Boeing 777-200', 'N789UA', 3),
-('Airbus A380', 'N456LH', 4),
 ('Boeing 747-400', 'N789EK', 5),
 ('Airbus A330', 'N321DL', 1),
 ('Boeing 787-9', 'N789AA', 2),
 ('Airbus A321', 'N456UA', 3),
 ('Boeing 747-8', 'N101LH', 4),
 ('Embraer E190', 'N456EK', 5),
-('Boeing 737-700', 'N234DL', 1),
 ('Airbus A350', 'N654AA', 2),
 ('Boeing 767-300', 'N222UA', 3),
 ('Airbus A319', 'N987LH', 4),
-('Embraer E175', 'N987EK', 5);
+('Embraer E175', 'N987EK', 5),
+('Boeing 737 MAX 8', 'N345DA', 1),
+('Boeing 787-10', 'N345UA', 3),
+('Airbus A340', 'N222LH', 4),
+('Boeing 737-900', 'N456DL', 1),
+('Airbus A380plus', 'N789AA', 2),
+('Boeing 757', 'N777UA', 3),
+('Airbus A318', 'N555LH', 4);
 
 -- DeIcingMethods table
 INSERT INTO DeIcingMethods (DeIcingMethodName) VALUES
@@ -382,63 +389,85 @@ CREATE TABLE MonthlyAirplaneCount (
   FOREIGN KEY (AirlineID) REFERENCES Airlines(AirlineID)
 );
 
-
-
 -- Delta Airlines (DL) Monthly Airplane Counts for 2023
 INSERT INTO MonthlyAirplaneCount (AirlineID, Year, Month, AirplaneCount)
 VALUES
   (1, 2023, 6, 52),
-  (1, 2023, 7, 54),
-  (1, 2023, 8, 53),
-  (1, 2023, 9, 56),
-  (1, 2023, 10, 58),
-  (1, 2023, 11, 57),
-  (1, 2023, 12, 60);
+  (1, 2023, 7, 64),
+  (1, 2023, 8, 58),
+  (1, 2023, 9, 71),
+  (1, 2023, 10, 47),
+  (1, 2023, 11, 62),
+  (1, 2023, 12, 56),
+  (1, 2023, 1, 68),
+  (1, 2023, 2, 60),
+  (1, 2023, 3, 55),
+  (1, 2023, 4, 70),
+  (1, 2023, 5, 50);
 
 -- American Airlines (AA) Monthly Airplane Counts for 2023
 INSERT INTO MonthlyAirplaneCount (AirlineID, Year, Month, AirplaneCount)
 VALUES
-  (2, 2023, 6, 60),
-  (2, 2023, 7, 62),
-  (2, 2023, 8, 63),
-  (2, 2023, 9, 65),
-  (2, 2023, 10, 68),
-  (2, 2023, 11, 67),
-  (2, 2023, 12, 70);
+  (2, 2023, 6, 75),
+  (2, 2023, 7, 70),
+  (2, 2023, 8, 80),
+  (2, 2023, 9, 73),
+  (2, 2023, 10, 85),
+  (2, 2023, 11, 72),
+  (2, 2023, 12, 88),
+  (2, 2023, 1, 82),
+  (2, 2023, 2, 78),
+  (2, 2023, 3, 90),
+  (2, 2023, 4, 76),
+  (2, 2023, 5, 79);
 
 -- United Airlines (UA) Monthly Airplane Counts for 2023
 INSERT INTO MonthlyAirplaneCount (AirlineID, Year, Month, AirplaneCount)
 VALUES
-  (3, 2023, 6, 48),
-  (3, 2023, 7, 50),
+  (3, 2023, 6, 45),
+  (3, 2023, 7, 49),
   (3, 2023, 8, 52),
-  (3, 2023, 9, 53),
-  (3, 2023, 10, 55),
-  (3, 2023, 11, 57),
-  (3, 2023, 12, 58);
-
+  (3, 2023, 9, 47),
+  (3, 2023, 10, 53),
+  (3, 2023, 11, 48),
+  (3, 2023, 12, 55),
+  (3, 2023, 1, 50),
+  (3, 2023, 2, 54),
+  (3, 2023, 3, 51),
+  (3, 2023, 4, 56),
+  (3, 2023, 5, 53);
 
 -- Lufthansa (LH) Monthly Airplane Counts for 2023
 INSERT INTO MonthlyAirplaneCount (AirlineID, Year, Month, AirplaneCount)
 VALUES
-  (4, 2023, 6, 40),
+  (4, 2023, 6, 35),
   (4, 2023, 7, 42),
-  (4, 2023, 8, 44),
-  (4, 2023, 9, 45),
-  (4, 2023, 10, 48),
-  (4, 2023, 11, 50),
-  (4, 2023, 12, 52);
+  (4, 2023, 8, 37),
+  (4, 2023, 9, 41),
+  (4, 2023, 10, 39),
+  (4, 2023, 11, 38),
+  (4, 2023, 12, 43),
+  (4, 2023, 1, 40),
+  (4, 2023, 2, 45),
+  (4, 2023, 3, 39),
+  (4, 2023, 4, 44),
+  (4, 2023, 5, 41);
 
 -- Emirates (EK) Monthly Airplane Counts for 2023
 INSERT INTO MonthlyAirplaneCount (AirlineID, Year, Month, AirplaneCount)
 VALUES
-  (5, 2023, 6, 55),
-  (5, 2023, 7, 57),
-  (5, 2023, 8, 59),
-  (5, 2023, 9, 60),
-  (5, 2023, 10, 62),
-  (5, 2023, 11, 64),
-  (5, 2023, 12, 66);
+  (5, 2023, 6, 62),
+  (5, 2023, 7, 68),
+  (5, 2023, 8, 65),
+  (5, 2023, 9, 70),
+  (5, 2023, 10, 75),
+  (5, 2023, 11, 69),
+  (5, 2023, 12, 78),
+  (5, 2023, 1, 73),
+  (5, 2023, 2, 76),
+  (5, 2023, 3, 80),
+  (5, 2023, 4, 79),
+  (5, 2023, 5, 82);
 
 
 -- SHOW TABLES;

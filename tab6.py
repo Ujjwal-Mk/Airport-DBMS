@@ -4,7 +4,7 @@ import pandas as pd
 def GHS(cursor):
     st.write("")
     with st.container():
-        st.header(":green[Hangar bay]")
+        st.header("Hangar bay")
         cursor.execute('''
             SELECT 
             GA.`ArrivalDate`, GA.`DepartureDate`, GA.`FlightNumber`, 
@@ -23,7 +23,7 @@ def GHS(cursor):
         rows = cursor.fetchall()
         st.dataframe(pd.DataFrame(rows,columns=cols,index=[i for i in range(1,len(rows)+1)]), use_container_width=True)
     with st.container():
-        st.header(":green[Ground Handling Service Requests]")
+        st.header("Ground Handling Service Requests")
         cursor.execute('''
             SELECT 
             a0.`AirplaneType`, a0.`AirplaneRegistration`,  

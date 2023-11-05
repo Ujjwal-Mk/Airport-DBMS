@@ -19,7 +19,7 @@ def disp(cursor):
         def reset():
             st.session_state.submitted = False
         def create_user_registration():
-            with st.expander("Register :green[New User] Here:"):
+            with st.expander("Register New User Here:"):
                 with st.form("my_form",clear_on_submit=True):
                     st.text_input("Username",key="uname")
                     st.text_input("Password",type='password',key='Pass')

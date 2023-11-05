@@ -2,8 +2,9 @@ import streamlit as st
 import pandas as pd
 # Reports and Energency - ATC
 def Maintenance(cursor):
-    st.header(":orange[Aircraft Maintenance]")
-    st.write("")
+    st.text("")
+    st.header("Aircraft Maintenance")
+    st.text("")
     cursor.execute('''
             SELECT `RequestedBy`, `MaintenanceType`, `RequestDate`, `Status`, a0.`AirplaneType`, a0.`AirplaneRegistration` FROM `MaintenanceRequests` as mr
             JOIN `Airplanes` as a0

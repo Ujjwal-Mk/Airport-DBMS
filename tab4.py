@@ -16,8 +16,9 @@ def reset():
     st.session_state.submitted = False
 
 def disp(cursor, conn):
-    st.header(":orange[Communication and Announcements]")
-    st.write("")
+    st.text("")
+    st.header("Communication and Announcements")
+    st.text("")
     c1,c2,c3 = st.columns(3)
     with st.container():
         with c1:
@@ -50,27 +51,20 @@ def disp(cursor, conn):
                     - {row[1]}
                 ''')
     with st.container():
-        # conn1 = mysql.connector.connect(**db_config())
-        # cursor1 = conn1.cursor()
-        with st.expander('New Message'):
-            with st.form("my_form2", clear_on_submit=True):
-                st.text_input('Message Subject',key='Subject')
-                st.text_input("Message Body",key='body')
-                radios = st.radio('Message Type',options=get_types(cursor))
-                st.form_submit_button('Submit',on_click=submitted)
-
+        Subject=None;body=None;radios=None
+        with st.form("my_form2", clear_on_submit=True):
+            st.text_input('Message Subject',key='Subject')
+            st.text_input("Message Body",key='body')
+            radios = st.radio('Message Type',options=get_types(cursor))
+            st.form_submit_button('Submit',on_click=submitted)
+            Subject=str(st.session_state.Subject)
+            body=str(st.session_state.body)
+        if Subject!=None and radios!=None and body!=None and Subject!="" and body!="" and radios!="":
             if 'submitted' in st.session_state and st.session_state.submitted==True:
-                try:
-                    Subject=str(st.session_state.Subject)
-                    body=str(st.session_state.body)
-                    operate_str=f"INSERT INTO CommunicationLog (MessageType,\
-                                MessageSubject, MessageBody, SentDate)\
-                                VALUES ('{radios}', '{Subject}', '{body}', CURRENT_TIMESTAMP);"
-                    cursor.execute(operate_str)
-                    conn.commit()
-                except mysql.connector.ProgrammingError as err:
-                    print(err)
+                operate_str=f"INSERT INTO CommunicationLog (MessageType,\
+                            MessageSubject, MessageBody, SentDate)\
+                            VALUES ('{radios}', '{Subject}', '{body}', CURRENT_TIMESTAMP);"
+                cursor.execute(operate_str)
+                conn.commit()
                 st.success("New message added")
                 reset()
-                # st.rerun()
-                disp(cursor,conn)
