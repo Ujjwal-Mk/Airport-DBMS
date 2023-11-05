@@ -22,7 +22,8 @@ def disp(cursor, conn):
     with st.container():
         with c1:
             st.header(":blue[Recent Incidents]")
-            cursor.execute('''SELECT `IncidentDescription` FROM `IncidentReport` ORDER BY `IncidentDate` DESC LIMIT 3;''')
+            cursor.execute('''SELECT `IncidentDescription` FROM `IncidentReport` \
+                            ORDER BY `IncidentDate` DESC LIMIT 3;''')
             rows = cursor.fetchall()
             for row in rows:
                 st.markdown(f'''
@@ -62,7 +63,8 @@ def disp(cursor, conn):
                 try:
                     Subject=str(st.session_state.Subject)
                     body=str(st.session_state.body)
-                    operate_str=f"INSERT INTO CommunicationLog (MessageType, MessageSubject, MessageBody, SentDate)\
+                    operate_str=f"INSERT INTO CommunicationLog (MessageType,\
+                                MessageSubject, MessageBody, SentDate)\
                                 VALUES ('{radios}', '{Subject}', '{body}', CURRENT_TIMESTAMP);"
                     cursor.execute(operate_str)
                     conn.commit()
