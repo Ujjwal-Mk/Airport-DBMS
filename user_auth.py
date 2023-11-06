@@ -19,6 +19,8 @@ def login_user():
 
     authenticator = stauth.Authenticate(credentials, "cookkkie", "random_key", cookie_expiry_days=1)
 
+    st.title("Airport Staff Management")
+
     name, authentications_status, username = authenticator.login("Login", "main")
 
     if authentications_status is False:

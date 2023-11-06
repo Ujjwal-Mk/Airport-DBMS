@@ -18,7 +18,7 @@ import tab1 as tb1, \
 
 def homepage(boolean,username,authenticator):
     if boolean:
-        st.title("Airport Staff Management")
+        # st.title("Airport Staff Management")
         progressbar = st.progress(0)
         for i in range(100):
             progressbar.progress(i+1)
