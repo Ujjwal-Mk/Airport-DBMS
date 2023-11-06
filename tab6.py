@@ -5,7 +5,7 @@ def GHS(cursor):
     st.write("")
     with st.container():
         st.header("Hangar bay")
-        cursor.callproc("GetMaintenanceData")  
+        cursor.callproc("GetMaintenanceData1")  
         for result in cursor.stored_results():
             rows = result.fetchall()
             cols = [i[0] for i in result.description]

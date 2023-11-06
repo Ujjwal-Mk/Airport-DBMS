@@ -46,23 +46,15 @@ def inp_disp(cursor):
                             </style>
                             """, unsafe_allow_html=True)
                 operate_str='''
-                    SELECT NumberOfPassengers
-                    FROM Airlines a
-                    WHERE AirlineID=%s;
+                    SELECT GetNumberOfPassengersForAirline(%s);;
                 '''
                 cursor.execute(operate_str,(air_names_dict[st.session_state.air_name],))
                 NumberOfPassengers=int(cursor.fetchall()[0][0])
-                operate_str1="""SELECT ROUND(AVG(mac.`AirplaneCount`))
-                        FROM MonthlyAirplaneCount as mac
-                        JOIN Airlines as a0 ON mac.AirlineID = a0.AirlineID
-                        WHERE mac.AirlineID = %s
-                    """
+                operate_str1=""" SELECT GetRoundedAverageAirplaneCount(%s);"""
                 cursor.execute(operate_str1,(air_names_dict[st.session_state.air_name],))
                 avgPlanes = int(cursor.fetchall()[0][0])
                 operate_str2='''
-                    SELECT NumberOfEmployees
-                    FROM Airlines a
-                    WHERE AirlineID=%s;
+                    SELECT GetNumberOfEmployeesForAirline(%s);
                 '''
                 cursor.execute(operate_str2,(air_names_dict[st.session_state.air_name],))
                 NumberOfEmployees=int(cursor.fetchall()[0][0])

@@ -373,8 +373,7 @@ DELIMITER ;
 
 
 DELIMITER //
-
-CREATE PROCEDURE GetMaintenanceData()
+CREATE PROCEDURE GetMaintenanceData1()
 BEGIN
     SELECT
         GA.`ArrivalDate`, GA.`DepartureDate`, GA.`FlightNumber`,
@@ -385,7 +384,7 @@ BEGIN
     JOIN `Airlines` AS a0 ON a0.`AirlineID` = GA.`AirlineID`
     JOIN `Airplanes` AS a1 ON a1.`AirplaneID` = GA.`AirplaneID`
     JOIN `Gateways` AS GW ON GW.`GatewayID` = GA.`GateID`;
-END//
+END //
 
 DELIMITER ;
 
@@ -519,7 +518,90 @@ VALUES
   (5, 2023, 4, 79),
   (5, 2023, 5, 82);
 
+-- DROP FUNCTION `UpdateResourceInventory`;
 
+-- DELIMITER //
+-- CREATE FUNCTION GetResourceInventory()
+-- RETURNS TEXT
+-- DETERMINISTIC
+-- READS SQL DATA
+-- BEGIN
+--     DECLARE result TEXT;
+
+--     SET result = (
+--         SELECT GROUP_CONCAT(CONCAT(ResourceID, ':', ResourceName) SEPARATOR '\n')
+--         FROM ResourceInventory
+--     );
+
+--     RETURN result;
+-- END;
+-- //
+-- DELIMITER ;
+
+DELIMITER //
+
+CREATE FUNCTION GetRoundedAverageAirplaneCount(p_AirlineID INT)
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE avg_airplane_count INT;
+    
+    SELECT ROUND(AVG(mac.`AirplaneCount`))
+    INTO avg_airplane_count
+    FROM MonthlyAirplaneCount AS mac
+    JOIN Airlines AS a0 ON mac.AirlineID = a0.AirlineID
+    WHERE mac.AirlineID = p_AirlineID;
+    
+    RETURN avg_airplane_count;
+END;
+//
+DELIMITER ;
+
+-- SELECT GetRoundedAverageAirplaneCount(1);
+DELIMITER //
+CREATE FUNCTION GetNumberOfPassengersForAirline(p_AirlineID INT)
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE num_passengers INT;
+    
+    SELECT NumberOfPassengers
+    INTO num_passengers
+    FROM Airlines AS a
+    WHERE AirlineID = p_AirlineID;
+    
+    RETURN num_passengers;
+END;
+//
+DELIMITER ;
+
+-- SELECT GetNumberOfPassengersForAirline(%s);
+DELIMITER //
+CREATE FUNCTION GetNumberOfEmployeesForAirline(p_AirlineID INT)
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE num_employees INT;
+    
+    SELECT NumberOfEmployees
+    INTO num_employees
+    FROM Airlines AS a
+    WHERE AirlineID = p_AirlineID;
+    
+    RETURN num_employees;
+END;
+//
+DELIMITER ;
+
+-- SELECT GetNumberOfEmployeesForAirline(%s);
+
+
+-- SELECT * FROM `CommunicationLog`;
+
+-- DROP FUNCTION `GetResourceInventory`;
 -- SHOW TABLES;
 -- SELECT * FROM `Airplanes`;
 -- SELECT  a0.`AirplaneRegistration`, a0.`AirplaneType`
