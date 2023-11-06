@@ -596,6 +596,25 @@ END;
 //
 DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER CommunicationLog_InsertTrigger
+BEFORE INSERT ON CommunicationLog
+FOR EACH ROW
+BEGIN
+    -- Check if any of the values being inserted are NULL
+    IF (
+        NEW.MessageType IS NULL OR
+        NEW.MessageSubject IS NULL OR
+        NEW.MessageBody IS NULL
+    ) THEN
+        -- Raise an error or handle as needed
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'One or more values being inserted are NULL';
+    END IF;
+END;
+//
+DELIMITER ;
+
 -- SELECT GetNumberOfEmployeesForAirline(%s);
 
 
