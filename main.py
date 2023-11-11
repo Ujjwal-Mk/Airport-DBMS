@@ -22,7 +22,7 @@ def homepage(boolean,username,authenticator):
         progressbar = st.progress(0)
         for i in range(100):
             progressbar.progress(i+1)
-            # time.sleep(0.01)
+            time.sleep(0.01)
 
         try:
             conn = mysql.connector.connect(**ret_db_config())
