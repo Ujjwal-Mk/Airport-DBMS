@@ -1,16 +1,17 @@
 import mysql.connector
 import streamlit_authenticator as stauth
-import main as mp
+import pathlib, sys
+module_dir = pathlib.Path(__file__).parent.parent
+sys.path.append(str(module_dir))
+from backend.dbconfig import ret_db_config
 # Database connection parameters
-db_config = mp.ret_db_config()
-
 
 import mysql.connector
 
 def get_usr_info():
     try:
         # Establish a connection to the MySQL database
-        connection = mysql.connector.connect(**db_config)
+        connection = mysql.connector.connect(**ret_db_config())
 
         # Create a cursor object to interact with the database
         cursor = connection.cursor()
@@ -21,7 +22,7 @@ def get_usr_info():
         names = []
 
         # Execute a query to fetch usernames and passwords
-        cursor.execute('SELECT username, hashed_pass as password, CONCAT(f_name, " ", l_name) as names FROM airport_staff_management.usr_info;')
+        cursor.execute('SELECT username, hashed_pass as password, CONCAT(f_name, " ", l_name) as names FROM usr_info;')
 
         # Fetch all the rows as a list of tuples
         user_data = cursor.fetchall()
@@ -39,7 +40,7 @@ def get_usr_info():
         if isinstance(err, mysql.connector.InterfaceError):
             raise CustomDatabaseError("Database connection error")
         else:
-            print(f"Error: {err}")
+            print(f"Error: {err} get_usr_info",**ret_db_config())
     finally:
         if connection:
             # Close the cursor and the database connection
@@ -56,7 +57,7 @@ class CustomDatabaseError(Exception):
 
 def add_usr(uname,Pass,f_name,minit,l_name,auth_lvl):
     try:    
-        connection = mysql.connector.connect(**db_config)
+        connection = mysql.connector.connect(**ret_db_config())
 
         cursor = connection.cursor()
         dummy_list = []
@@ -83,7 +84,7 @@ def add_usr(uname,Pass,f_name,minit,l_name,auth_lvl):
             connection.close()
 def get_level(username):
     try:
-        connection = mysql.connector.connect(**db_config)
+        connection = mysql.connector.connect(**ret_db_config())
         cursor = connection.cursor()
         auth_levels = []
         operate_str1 = (f"SELECT auth_level FROM usr_info WHERE username='{username}'")

@@ -737,3 +737,16 @@ DELIMITER ;
 -- SELECT * FROM `Airlines`;
 -- SELECT `NumberOfEmployees`, `NumberOfPassengers`as `Total Passengers Flown` FROM `Airlines` WHERE `AirlineID` = 1;
 -- SELECT * FROM usr_info1;
+
+START TRANSACTION;
+
+CREATE USER 'ooadproj'@'localhost' IDENTIFIED BY 'ooadproj';
+
+
+GRANT ALL PRIVILEGES ON airport.* TO 'ooadproj'@'localhost';
+
+
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'ooadproj'@'localhost';
+
+COMMIT;

@@ -1,6 +1,9 @@
 import streamlit as st
 import mysql.connector
-from dbconfig import ret_db_config as db_config
+import pathlib, sys
+module_dir = pathlib.Path(__file__).parent.parent
+sys.path.append(str(module_dir))
+from backend.dbconfig import ret_db_config as db_config
 import pandas as pd
 import main as mp
 def get_types(cursor):

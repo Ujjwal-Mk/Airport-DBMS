@@ -1,5 +1,8 @@
 import streamlit as st
-import get_keys as gk
+import pathlib, sys
+module_dir = pathlib.Path(__file__).parent.parent
+sys.path.append(str(module_dir))
+import backend.get_keys as gk
 import pandas as pd
 
 def disp(cursor):

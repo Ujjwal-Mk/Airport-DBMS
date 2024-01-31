@@ -1,7 +1,10 @@
 import streamlit as st
 import time
 import streamlit_authenticator as stauth
-import get_keys as gk
+import pathlib, sys
+module_dir = pathlib.Path(__file__).parent.parent
+sys.path.append(str(module_dir))
+from backend import get_keys as gk
 
 def login_user():
     try:
